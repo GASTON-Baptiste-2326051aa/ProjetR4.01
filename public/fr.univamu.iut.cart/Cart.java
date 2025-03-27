@@ -7,23 +7,23 @@ public class Cart{
     /**
      * Identifiant du panier
      */
-    private int id;
+    protected int id;
     /**
      * Nom du panier
      */
-    private String name;
+    protected String name;
     /**
      * Description du panier
      */
-    private String description;
+    protected String description;
     /**
      * Prix du panier
      */
-    private int price;
+    protected int price;
     /**
      * Quantité disponible
      */
-    private int available_quantity;
+    protected int available_quantity;
 
 
     /**
@@ -129,12 +129,11 @@ public class Cart{
         this.available_quantity = available_quantity;
     }
 
-    @java.lang.Override
     /**
      *
      */
     public java.lang.String toString() {
-        return "Cart{" +
+        return "Panier{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +

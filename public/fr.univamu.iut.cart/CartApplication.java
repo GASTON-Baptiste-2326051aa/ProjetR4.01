@@ -1,4 +1,4 @@
-package fr.univamu.iut.book;
+package fr.univamu.iut.cart;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Disposes;
@@ -11,19 +11,18 @@ import jakarta.ws.rs.core.Application;
 public class CartApplication extends Application {
 
     /**
-     * Méthode appelée par l'API CDI pour injecter la connection à la base de données au moment de la création
+     * Méthode appelée par l'API CDI pour injecter la connexion à la base de données au moment de la création
      * de la ressource
-     * @return un objet implémentant l'interface BookRepositoryInterface utilisée
-     *          pour accéder aux données des livres, voire les modifier
+     * @return un objet implémentant l'interface CartRepositoryInterface utilisée
+     *         pour accéder aux données des paniers, voire les modifier
      */
     @Produces
-    private CartRepositoryInterface openDbConnection(){
+    private CartRepositoryInterface openDbConnection() {
         CartRepositoryMariadb db = null;
 
-        try{
+        try {
             db = new CartRepositoryMariadb("jdbc:mariadb://mysql-[compte].alwaysdata.net/[compte]_library_db", "[compte]_library", "mdp");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
         return db;
@@ -31,9 +30,27 @@ public class CartApplication extends Application {
 
     /**
      * Méthode permettant de fermer la connexion à la base de données lorsque l'application est arrêtée
-     * @param bookRepo la connexion à la base de données instanciée dans la méthode @openDbConnection
+     * @param cartRepo la connexion à la base de données instanciée dans la méthode @openDbConnection
      */
-    private void closeDbConnection(@Disposes CartRepositoryInterface cartRepo ) {
+    private void closeDbConnection(@Disposes CartRepositoryInterface cartRepo) {
         cartRepo.close();
+    }
+
+    /**
+     * Méthode appelée par l'API CDI pour injecter l'API Book au moment de la création de la ressource
+     * @return une instance de l'API avec l'url à utiliser
+     */
+    @Produces
+    private BookRepositoryInterface connectBookApi(){
+        return new BookRepositoryAPI("http://localhost:8080/book-1.0-SNAPSHOT/api/");
+    }
+
+    /**
+     * Méthode appelée par l'API CDI pour injecter l'API User au moment de la création de la ressource
+     * @return une instance de l'API avec l'url à utiliser
+     */
+    @Produces
+    private UserRepositoryInterface connectUserApi(){
+        return new UserRepositoryAPI("http://localhost:8080/user-1.0-SNAPSHOT/api/");
     }
 }

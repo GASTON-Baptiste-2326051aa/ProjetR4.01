@@ -1,10 +1,9 @@
-package fr.univamu.iut.book;
+package fr.univamu.iut.cart;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
-
 
 /**
  * Ressource associée aux paniers
@@ -22,26 +21,27 @@ public class CartResource {
     /**
      * Constructeur par défaut
      */
-    public CartResource(){}
+    public CartResource() {}
 
     /**
      * Constructeur permettant d'initialiser le service avec une interface d'accès aux données
-     * @param bookRepo objet implémentant l'interface d'accès aux données
+     * @param cartRepo objet implémentant l'interface d'accès aux données
      */
-    public @Inject CartResource( CartRepositoryInterface cartRepo ){
-        this.service = new BookService(cartRepo) ;
+
+    public @Inject CartResource(CartRepositoryInterface cartRepo) {
+        this.service = new CartService(cartRepo);
     }
 
     /**
-     * Constructeur permettant d'initialiser le service d'accès aux livres
+     * Constructeur permettant d'initialiser le service d'accès aux paniers
      */
-    public CartResource( CartService service ){
+    public CartResource(CartService service) {
         this.service = service;
     }
 
     /**
-     * Enpoint permettant de publier de tous les livres enregistrés
-     * @return la liste des livres (avec leurs informations) au format JSON
+     * Endpoint permettant de récupérer tous les paniers enregistrés
+     * @return la liste des paniers (avec leurs informations) au format JSON
      */
     @GET
     @Produces("application/json")
@@ -50,40 +50,52 @@ public class CartResource {
     }
 
     /**
-     * Endpoint permettant de publier les informations d'un livre dont la référence est passée paramètre dans le chemin
-     * @param reference référence du livre recherché
-     * @return les informations du livre recherché au format JSON
+     * Endpoint permettant de récupérer les informations d'un panier dont l'identifiant est passé en paramètre dans le chemin
+     * @param id identifiant du panier recherché
+     * @return les informations du panier recherché au format JSON
      */
     @GET
-    @Path("{reference}")
+    @Path("{id}")
     @Produces("application/json")
-    public String getCart( @PathParam("reference") int id){
-
+    public String getCart(@PathParam("id") int id) {
         String result = service.getCartJSON(id);
 
-        // si le panier n'a pas été trouvé
-        if( result == null )
+        // Si le panier n'a pas été trouvé
+        if (result == null)
             throw new NotFoundException();
 
         return result;
     }
 
     /**
-     * Endpoint permettant de mettre à jours le statut d'un panier uniquement
-     * (la requête patch doit fournir le nouveau statut sur Cart, les autres informations sont ignorées)
-     * @param id l'identifiant du panier dont il faut changer le statut
-     * @param cart le panier transmis en HTTP au format JSON et convertit en objet Cart
+     * Endpoint permettant de mettre à jour les informations d'un panier
+     * @param id identifiant du panier à mettre à jour
+     * @param cart le panier transmis en HTTP au format JSON et converti en objet Cart
      * @return une réponse "updated" si la mise à jour a été effectuée, une erreur NotFound sinon
      */
     @PUT
-    @Path("{reference}")
+    @Path("{id}")
     @Consumes("application/json")
-    public Response updateCart(@PathParam("reference") int id , Cart cart ){
-
-        // si le panier n'a pas été trouvé
-        if( ! service.updateBook(id, cart) )
+    public Response updateCart(@PathParam("id") int id, Cart cart) {
+        // Si le panier n'a pas été trouvé
+        if (!service.updateCart(id, cart))
             throw new NotFoundException();
         else
             return Response.ok("updated").build();
+    }
+
+    /**
+     * Endpoint permettant de supprimer une réservation
+     * @param reference référence du livre à "libérer"
+     * @return un objet Response indiquant "removed" si la réservation a été annulée ou une erreur "not found" sinon
+     */
+    @DELETE
+    @Path("{reference}")
+    public Response removeReservation(@PathParam("reference") String reference){
+
+        if( service.removeReservation(reference) )
+            return Response.ok("removed").build();
+        else
+            return Response.status( Response.Status.NOT_FOUND ).build();
     }
 }

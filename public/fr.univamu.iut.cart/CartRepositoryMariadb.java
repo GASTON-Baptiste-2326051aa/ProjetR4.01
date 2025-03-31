@@ -42,7 +42,7 @@ public class CartRepositoryMariadb implements CartRepositoryInterface, Closeable
      * @return l'objet Cart correspondant ou null si non trouvé
      */
     @Override
-    public Cart getCart(int id) {
+    public Cart getCart(String id) {
         Cart selectedCart = null;
         String query = "SELECT * FROM Cart WHERE id=?";
 
@@ -78,7 +78,7 @@ public class CartRepositoryMariadb implements CartRepositoryInterface, Closeable
             ResultSet result = ps.executeQuery();
 
             while (result.next()) {
-                int id = result.getInt("id");
+                String id = result.getString("id");
                 String name = result.getString("name");
                 String description = result.getString("description");
                 int price = result.getInt("price");

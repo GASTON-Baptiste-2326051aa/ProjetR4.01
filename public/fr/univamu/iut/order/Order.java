@@ -28,7 +28,7 @@ public class Order {
     /**
      * Adresse du relai
      */
-    protected String relayAddress
+    protected String relayAddress;
 
     /**
      * Constructeur par défaut
@@ -44,7 +44,7 @@ public class Order {
      * @param date date de la livraison
      * @param relayAddress adresse du relai
      */
-    public Order(int id, id userId, int[] cartId, String date, String relayAddress) {
+    public Order(int id, int userId, int[] cartId, String date, String relayAddress) {
         this.id = id;
         this.userId = userId;
         this.cartId = cartId;
@@ -138,13 +138,11 @@ public class Order {
      */
     public String cartIdToString() {
         String cartIdString = "[";
-        for (int i = 0; i < cartId.length; ++i) {
-            if (cartId[i] != null) {
-                cartIdString += "'" + cartId[i] + "', ";
-            }
+        for (int id : cartId) {
+            cartIdString += "'" + id + "', ";
         }
-        cartIdString.substring(cartIdString.length()-2, cartIdString.length());
-        cartIdString += "]";
+        cartIdString = cartIdString.substring(cartIdString.length()-2) + "]";
+        return cartIdString;
     }
 
     /**

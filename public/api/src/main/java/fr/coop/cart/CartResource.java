@@ -1,5 +1,9 @@
-package fr.univamu.iut.cart;
+package fr.coop.cart;
 
+import fr.coop.api.data.interfaces.ProductRepositoryInterface;
+import fr.coop.api.data.interfaces.UserRepositoryInterface;
+import fr.coop.api.data.repository.ProductRepository;
+import fr.coop.api.data.repository.UserRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -28,8 +32,8 @@ public class CartResource {
      * @param cartRepo objet implémentant l'interface d'accès aux données
      */
 
-    public @Inject CartResource(CartRepositoryInterface cartRepo) {
-        this.service = new CartService(cartRepo);
+    public @Inject CartResource(CartRepositoryInterface cartRepo, UserRepositoryInterface userRepo, ProductRepositoryInterface productRepo) {
+        this.service = new CartService(cartRepo, userRepo, productRepo);
     }
 
     /**
@@ -90,7 +94,7 @@ public class CartResource {
      * @return un objet Response indiquant "removed" si le panier a été annulé ou une erreur "not found" sinon
      */
     @DELETE
-    @Path("{reference}")
+    @Path("{id}")
     public Response removeCart(@PathParam("id") String id){
 
         if( service.removeCart(id) )

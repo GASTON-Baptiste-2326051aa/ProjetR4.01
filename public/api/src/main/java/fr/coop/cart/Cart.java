@@ -1,4 +1,4 @@
-package fr.univamu.iut.cart;
+package fr.coop.cart;
 
 /**
  * Classe représentant un panier.

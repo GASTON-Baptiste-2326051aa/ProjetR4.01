@@ -1,4 +1,4 @@
-package fr.univamu.iut.cart;
+package fr.coop.cart;
 
 import java.util.*;
 
@@ -35,4 +35,23 @@ public interface CartRepositoryInterface {
      * @return true si la mise à jour a réussi, false sinon.
      */
     public boolean updateCart(int id, String name, String description, int price, int available_quantity);
+
+
+    /**
+     * Retire un produit à un panier
+     * @param idCart identifiant du panier
+     * @param idProduct identifiant du produit
+     * @return
+     */
+    public boolean removeProduct(String idCart, String idProduct);
+
+
+    /**
+     * Ajoute un produit à un panier
+     *
+     * @param idCart    identifiant du panier
+     * @param idProduct identifiant du produit
+     * @return
+     */
+    public boolean addProduct(String idCart, String idProduct);
 }

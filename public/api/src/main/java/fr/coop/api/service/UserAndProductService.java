@@ -64,6 +64,17 @@ public class UserAndProductService {
     }
 
     /**
+     * Vérifie si un utilisateur existe avec l'ID et le mot de passe donné.
+     *
+     * @param userId   L'ID de l'utilisateur à vérifier.
+     * @param password Le mot de passe de l'utilisateur à vérifier.
+     * @return true si l'utilisateur existe, false sinon.
+     */
+    public boolean isUserExist(String userId, String password) {
+        return userRepository.isUserExist(userId, password);
+    }
+
+    /**
      * Récupère un utilisateur avec l'ID donné et le convertit en JSON.
      *
      * @param userId L'ID de l'utilisateur à récupérer.

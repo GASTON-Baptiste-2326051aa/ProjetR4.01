@@ -118,6 +118,25 @@ public class UserAndProductRessource {
     }
 
     /**
+     * Vérifie si un utilisateur existe avec l'ID et le mot de passe donnés.
+     *
+     * @param id       L'ID de l'utilisateur.
+     * @param password Le mot de passe de l'utilisateur.
+     * @return La réponse HTTP indiquant si l'utilisateur existe ou non.
+     */
+    @GET
+    @Path("/user/exists/{id}/{password}")
+    @Produces("application/json")
+    public Response isUserExist(@PathParam("id") String id, @PathParam("password") String password) {
+        boolean exists = userAndProductService.isUserExist(id, password);
+        if (exists) {
+            return Response.ok("{\"exists\": true}").build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("{\"exists\": false}").build();
+        }
+    }
+
+    /**
      * Récupère tous les produits.
      *
      * @return La réponse HTTP contenant la liste des produits en format JSON.

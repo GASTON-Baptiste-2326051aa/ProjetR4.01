@@ -177,4 +177,35 @@ public class UserRepository extends Repository implements UserRepositoryInterfac
 
         return users;
     }
+
+    /**
+     * Vérifie si un utilisateur existe avec l'ID et le mot de passe donné.
+     *
+     * @param userId   L'ID de l'utilisateur à vérifier.
+     * @param password Le mot de passe de l'utilisateur à vérifier.
+     * @return true si l'utilisateur existe, false sinon.
+     */
+    @Override
+    public boolean isUserExist(String userId, String password) {
+        String query = "SELECT * FROM USER WHERE id = ? AND password = ?";
+        boolean exists = false;
+        int id;
+
+        if (userId.charAt(0) == 'U') {
+            id = Integer.parseInt(userId.substring(1));
+        } else {
+            throw new IllegalArgumentException("Invalid user ID format");
+        }
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.setString(2, password);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            exists = resultSet.next();
+        } catch (SQLException e) {
+            System.err.println("Error checking user existence: " + e.getMessage());
+        }
+
+        return exists;
+    }
 }

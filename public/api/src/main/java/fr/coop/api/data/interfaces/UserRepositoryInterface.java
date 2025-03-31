@@ -52,4 +52,13 @@ public interface UserRepositoryInterface {
      * @return Une liste de tous les utilisateurs.
      */
     List<User> getAllUsers();
+
+    /**
+     * Vérifie si un utilisateur existe avec l'ID et le mot de passe donné.
+     *
+     * @param userId   L'ID de l'utilisateur à vérifier.
+     * @param password Le mot de passe de l'utilisateur à vérifier.
+     * @return true si l'utilisateur existe, false sinon.
+     */
+    boolean isUserExist(String userId, String password);
 }

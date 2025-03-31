@@ -1,4 +1,4 @@
-package fr.univamu.iut.order;
+package com.coop.order;
 
 /**
  * Classe représentant une commande

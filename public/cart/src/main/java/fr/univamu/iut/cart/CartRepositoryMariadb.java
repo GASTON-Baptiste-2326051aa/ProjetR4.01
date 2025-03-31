@@ -1,3 +1,5 @@
+package fr.univamu.iut.cart;
+
 import java.io.Closeable;
 import java.sql.*;
 import java.util.*;
@@ -47,7 +49,7 @@ public class CartRepositoryMariadb implements CartRepositoryInterface, Closeable
         String query = "SELECT * FROM Cart WHERE id=?";
 
         try (PreparedStatement ps = dbConnection.prepareStatement(query)) {
-            ps.setInt(1, id);
+            ps.setInt(1, Integer.parseInt(id));
 
             ResultSet result = ps.executeQuery();
 

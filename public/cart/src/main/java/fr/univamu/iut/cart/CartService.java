@@ -2,6 +2,9 @@ package fr.univamu.iut.cart;
 
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Response;
+
 import java.util.ArrayList;
 
 /**
@@ -97,22 +100,22 @@ public class CartService {
             result = bookRepo.updateBook(myBook.reference, myBook.title, myBook.authors, 'r');
 
             if( result )
-                result = reservationRepo.registerReservation(id, reference);
+                result = cartRepo.registerReservation(idUser, idProduct);
         }
         return result;
     }
 
     /**
      * Enpoint permettant de soumettre une nouvelle réservation de livre demandée par un utilisateur enregistré
-     * @param id identifiant de l'utilisateur souhaitant faire la réservation
-     * @param reference référence du livre à réserver
+     * @param idUser identifiant de l'utilisateur souhaitant faire la réservation
+     * @param idProduct identifiant du produit
      * @return un objet Response indiquant "registred" si la réservation a été faite ou une erreur "conflict" sinon
      */
     @POST
     @Consumes("application/x-www-form-urlencoded")
-    public Response registerReservation(@FormParam("id") String id, @FormParam("reference") String reference){
+    public Response registerReservation(@FormParam("id") String idUser, @FormParam("id") String idProduct){
 
-        if( service.registerReservation(id, reference) )
+        if( service.registerCart(idUser, idProduct) )
             return Response.ok("registred").build();
         else
             return Response.status( Response.Status.CONFLICT ).build();
@@ -123,7 +126,7 @@ public class CartService {
      * @param reference référence du livre à libérer
      * @return true si la réservation a été supprimée, false sinon
      */
-    boolean removeReservation(String reference){
+    boolean removeCart(String reference){
         boolean result = false;
 
         // récupération des informations du livre

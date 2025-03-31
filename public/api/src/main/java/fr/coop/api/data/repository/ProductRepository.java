@@ -20,7 +20,7 @@ public class ProductRepository extends Repository implements ProductRepositoryIn
     }*/
 
     @Override
-    public int createProduct(String name, String description, double availableStock, String unitType) {
+    public String createProduct(String name, String description, double availableStock, String unitType) {
         String query = "INSERT INTO PRODUCT (NAME, DESCRIPTION, AVAILABLE_STOCK, UNIT_TYPE) VALUES (?, ?, ?, ?)";
         int productId = -1;
 
@@ -39,20 +39,27 @@ public class ProductRepository extends Repository implements ProductRepositoryIn
             System.err.println("Error creating product: " + e.getMessage());
         }
 
-        return productId;
+        return String.format("P%d", productId);
     }
 
     @Override
-    public boolean updateProduct(int productId, String newName, String newDescription, double newAvailableStock, String newUnitType) {
+    public boolean updateProduct(String productId, String newName, String newDescription, double newAvailableStock, String newUnitType) {
         String query = "UPDATE PRODUCT SET NAME = ?, DESCRIPTION = ?, AVAILABLE_STOCK = ?, UNIT_TYPE = ? WHERE ID = ?";
         boolean updated = false;
+        int id;
+
+        if (productId.charAt(0) == 'P') {
+            id = Integer.parseInt(productId.substring(1));
+        } else {
+            throw new IllegalArgumentException("Invalid product ID format");
+        }
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, newName);
             preparedStatement.setString(2, newDescription);
             preparedStatement.setDouble(3, newAvailableStock);
             preparedStatement.setString(4, newUnitType);
-            preparedStatement.setInt(5, productId);
+            preparedStatement.setInt(5, id);
             updated = preparedStatement.executeUpdate() != 0;
         } catch (SQLException e) {
             System.err.println("Error updating product: " + e.getMessage());
@@ -62,12 +69,19 @@ public class ProductRepository extends Repository implements ProductRepositoryIn
     }
 
     @Override
-    public boolean deleteProduct(int productId) {
+    public boolean deleteProduct(String productId) {
         String query = "DELETE FROM PRODUCT WHERE ID = ?";
         boolean deleted = false;
+        int id;
+
+        if (productId.charAt(0) == 'P') {
+            id = Integer.parseInt(productId.substring(1));
+        } else {
+            throw new IllegalArgumentException("Invalid product ID format");
+        }
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, productId);
+            preparedStatement.setInt(1, id);
             deleted = preparedStatement.executeUpdate() != 0;
         } catch (SQLException e) {
             System.err.println("Error deleting product: " + e.getMessage());
@@ -77,16 +91,23 @@ public class ProductRepository extends Repository implements ProductRepositoryIn
     }
 
     @Override
-    public Product getProduct(int productId) {
+    public Product getProduct(String productId) {
         String query = "SELECT * FROM PRODUCT WHERE ID = ?";
         Product product = null;
+        int id;
+
+        if (productId.charAt(0) == 'P') {
+            id = Integer.parseInt(productId.substring(1));
+        } else {
+            throw new IllegalArgumentException("Invalid product ID format");
+        }
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, productId);
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 product = new Product(
-                        resultSet.getInt("ID"),
+                        String.format("P%d", resultSet.getInt("ID")),
                         resultSet.getString("NAME"),
                         resultSet.getString("DESCRIPTION"),
                         resultSet.getDouble("AVAILABLE_STOCK"),
@@ -109,7 +130,7 @@ public class ProductRepository extends Repository implements ProductRepositoryIn
              ResultSet resultSet = statement.executeQuery(query)) {
             while (resultSet.next()) {
                 Product product = new Product(
-                        resultSet.getInt("ID"),
+                        String.format("P%d", resultSet.getInt("ID")),
                         resultSet.getString("NAME"),
                         resultSet.getString("DESCRIPTION"),
                         resultSet.getDouble("AVAILABLE_STOCK"),

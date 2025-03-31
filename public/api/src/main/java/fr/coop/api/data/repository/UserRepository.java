@@ -20,7 +20,7 @@ public class UserRepository extends Repository implements UserRepositoryInterfac
     }*/
 
     @Override
-    public int createUser(String firstName, String name, String password) {
+    public String createUser(String firstName, String name, String password) {
         String query = "INSERT INTO USER (FIRST_NAME, NAME, PASSWORD) VALUES (?, ?, ?)";
         int userId = -1;
 
@@ -38,19 +38,26 @@ public class UserRepository extends Repository implements UserRepositoryInterfac
             System.err.println("Error creating user: " + e.getMessage());
         }
 
-        return userId;
+        return String.format("U%d", userId);
     }
 
     @Override
-    public boolean updateUser(int userId, String firstName, String name, String newPassword) {
+    public boolean updateUser(String userId, String firstName, String name, String newPassword) {
         String query = "UPDATE USER SET first_name = ?, name = ?, password = ? WHERE id = ?";
         boolean updated = false;
+        int id;
+
+        if (userId.charAt(0) == 'U') {
+            id = Integer.parseInt(userId.substring(1));
+        } else {
+            throw new IllegalArgumentException("Invalid user ID format");
+        }
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, name);
             preparedStatement.setString(3, newPassword);
-            preparedStatement.setInt(4, userId);
+            preparedStatement.setInt(4, id);
             updated = preparedStatement.executeUpdate() != 0;
         } catch (SQLException e) {
             System.err.println("Error updating user: " + e.getMessage());
@@ -60,12 +67,19 @@ public class UserRepository extends Repository implements UserRepositoryInterfac
     }
 
     @Override
-    public boolean deleteUser(int userId) {
+    public boolean deleteUser(String userId) {
         String query = "DELETE FROM USER WHERE id = ?";
         boolean deleted = false;
+        int id;
+
+        if (userId.charAt(0) == 'U') {
+            id = Integer.parseInt(userId.substring(1));
+        } else {
+            throw new IllegalArgumentException("Invalid user ID format");
+        }
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(1, id);
             deleted = preparedStatement.executeUpdate() != 0;
         } catch (SQLException e) {
             System.err.println("Error deleting user: " + e.getMessage());
@@ -75,16 +89,23 @@ public class UserRepository extends Repository implements UserRepositoryInterfac
     }
 
     @Override
-    public User getUser(int userId) {
+    public User getUser(String userId) {
         User user = null;
         String query = "SELECT * FROM USER WHERE id = ?";
+        int id;
+
+        if (userId.charAt(0) == 'U') {
+            id = Integer.parseInt(userId.substring(1));
+        } else {
+            throw new IllegalArgumentException("Invalid user ID format");
+        }
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 user = new User(
-                        resultSet.getInt("id"),
+                        String.format("U%d", resultSet.getInt("id")),
                         resultSet.getString("first_name"),
                         resultSet.getString("name"),
                         resultSet.getString("password")
@@ -106,7 +127,7 @@ public class UserRepository extends Repository implements UserRepositoryInterfac
              ResultSet resultSet = statement.executeQuery(query)) {
             while (resultSet.next()) {
                 User user = new User(
-                        resultSet.getInt("id"),
+                        String.format("U%d", resultSet.getInt("id")),
                         resultSet.getString("first_name"),
                         resultSet.getString("name"),
                         resultSet.getString("password")

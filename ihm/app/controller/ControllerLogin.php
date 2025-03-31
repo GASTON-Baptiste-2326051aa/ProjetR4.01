@@ -1,6 +1,7 @@
 <?php
 namespace controller;
-use ModelApiProductUser;
+use Exception;
+use model\service\ModelApiProductUser;
 use view\ViewLogin;
 
 class ControllerLogin implements Controller
@@ -8,24 +9,35 @@ class ControllerLogin implements Controller
     private modelApiProductUser $modelApiProductUser;
     public function __construct()
     {
-        //TODO : initialiser la connexion à l'API
-        $this->modelApiProductUser = new modelApiProductUser();
+        $this->modelApiProductUser = new modelApiProductUser('http://localhost:8080/api-1.0-SNAPSHOT/api/user_and_product');
 
     }
 
+    /**
+     * @throws Exception
+     */
     public function execute() : void
     {
-        //TODO : vérifier si l'utilisateur est connecté via l'api
-        $isLogin = $this->modelApiProductUser->isLogin();
-        if($isLogin)
-        {
-
-            $_SESSION['isLogin'] = true;
-            header('Location: /index.php?action=homepage');
+        if ((isset($_GET[$_POST['id']])) || isset($_POST['password'])) {
+            $id = htmlspecialchars($_POST['id']);
+            $password = htmlspecialchars($_POST['password']);
+            $isLogin = $this->modelApiProductUser->login($id, $password);
+            if($isLogin['status'] == 200)
+            {
+                $user = $this->modelApiProductUser->getUser($id);
+                session_start();
+                $_SESSION['user'] = $user;
+                $_SESSION['logged'] = true;
+                header('Location: index.php?controller=homepage');
+            }
+            else
+            {
+                $view = new ViewLogin();
+                $view->show('Login failed');
+            }
         }
         else
         {
-            //TODO : afficher la page de connexion
             $view = new ViewLogin();
             $view->show();
         }

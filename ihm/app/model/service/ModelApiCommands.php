@@ -1,25 +1,36 @@
 <?php
 
 namespace model\service;
-class ModelApiCommands
+use Exception;
+
+class ModelApiCommands extends ModelApi
 {
-    public function __construct()
+    public function __construct($link)
     {
-        //TODO : initialiser la connexion à l'API
+        parent::__construct($link);
     }
 
-    public function getCommand() : array
+    /**
+     * @throws Exception
+     */
+    public function getCommand(string $id) : array
     {
-        //TODO : récupérer une commande
+        $url= '/command' . '/' . $id;
+        return $this->request($url);
     }
     public function validateCommand()
     {
         //TODO : valider une commande
     }
 
+    /**
+     * @throws Exception
+     */
     public function getAllCommands() : array
     {
-        //TODO : récupérer toutes les commandes
+        $url = '/command';
+        return $this->request($url);
+
     }
 
 

@@ -11,7 +11,6 @@ class ControllerCart implements Controller
 
     public function execute() : void
     {
-        //TODO : récupérer les paniers avec un model
         $paniers = [];
         $view = new ViewCart();
         $view->show($paniers);

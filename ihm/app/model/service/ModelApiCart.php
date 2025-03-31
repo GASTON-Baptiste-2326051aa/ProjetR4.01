@@ -2,21 +2,31 @@
 
 
 namespace model\service;
-class ModelApiCart
+use Exception;
+
+class ModelApiCart extends ModelApi
 {
-    public function __construct()
+    public function __construct($link)
     {
-        //TODO : initialiser la connexion à l'API
+        parent::__construct($link);
     }
 
-    public function getCart() : array
+    /**
+     * @throws Exception
+     */
+    public function getCart(string $id) : array
     {
-        //TODO : récupérer un panier
+        $url = '/cart' . '/' . $id;
+        return $this->request($url);
     }
 
+    /**
+     * @throws Exception
+     */
     public function getAllCarts() : array
     {
-        //TODO : récupérer tous les paniers
+        $url = '/cart';
+        return $this->request($url);
     }
 
     public function getCartProduct() : void

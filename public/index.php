@@ -1,4 +1,7 @@
 <?php
+
+use controller\ControllerHomepage;
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -8,6 +11,10 @@ require '../ihm/includes/autoload.php';
 include '../ihm/app/controller/ControllerHomepage.php';
 
 try {
+    if (!isset($_SESSION['logged'])) {
+        $controller = new ControllerHomepage();
+        $controller->execute();
+    }
     if (filter_input(INPUT_GET, 'action')) {
         $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_SPECIAL_CHARS);
         $str_ctrl = 'controllers\\Controller' . ucfirst($action);

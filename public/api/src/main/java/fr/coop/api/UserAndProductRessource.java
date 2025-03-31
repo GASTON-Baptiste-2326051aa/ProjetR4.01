@@ -10,18 +10,34 @@ import jakarta.json.bind.JsonbBuilder;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
+/**
+ * Ressource JAX-RS pour la gestion des utilisateurs et des produits.
+ */
 @Path("/user_and_product")
 @ApplicationScoped
 public class UserAndProductRessource {
-    private UserAndProductService userAndProductService; // = new UserAndProductService();
+    private UserAndProductService userAndProductService;
 
+    /**
+     * Constructeur par défaut.
+     */
     public UserAndProductRessource(){}
 
+    /**
+     * Constructeur avec injection de dépendance.
+     *
+     * @param userAndProductService Le service de gestion des utilisateurs et des produits.
+     */
     @Inject
     public UserAndProductRessource(UserAndProductService userAndProductService) {
         this.userAndProductService = userAndProductService;
     }
 
+    /**
+     * Récupère tous les utilisateurs.
+     *
+     * @return La réponse HTTP contenant la liste des utilisateurs en format JSON.
+     */
     @GET
     @Path("/user")
     @Produces("application/json")
@@ -30,6 +46,12 @@ public class UserAndProductRessource {
         return Response.ok(users).build();
     }
 
+    /**
+     * Récupère un utilisateur par son ID.
+     *
+     * @param id L'ID de l'utilisateur.
+     * @return La réponse HTTP contenant l'utilisateur en format JSON.
+     */
     @GET
     @Path("/user/{id}")
     @Produces("application/json")
@@ -38,6 +60,12 @@ public class UserAndProductRessource {
         return Response.ok(user).build();
     }
 
+    /**
+     * Crée un nouvel utilisateur.
+     *
+     * @param userJson Le JSON représentant l'utilisateur à créer.
+     * @return La réponse HTTP indiquant le statut de la création.
+     */
     @PUT
     @Path("/user/create")
     @Consumes("application/json")
@@ -52,6 +80,12 @@ public class UserAndProductRessource {
         }
     }
 
+    /**
+     * Met à jour un utilisateur existant.
+     *
+     * @param userJson Le JSON représentant l'utilisateur à mettre à jour.
+     * @return La réponse HTTP indiquant le statut de la mise à jour.
+     */
     @PUT
     @Path("/user/update")
     @Consumes("application/json")
@@ -66,6 +100,12 @@ public class UserAndProductRessource {
         }
     }
 
+    /**
+     * Supprime un utilisateur par son ID.
+     *
+     * @param id L'ID de l'utilisateur à supprimer.
+     * @return La réponse HTTP indiquant le statut de la suppression.
+     */
     @DELETE
     @Path("/user/delete/{id}")
     public Response deleteUser(@PathParam("id") String id) {
@@ -77,6 +117,11 @@ public class UserAndProductRessource {
         }
     }
 
+    /**
+     * Récupère tous les produits.
+     *
+     * @return La réponse HTTP contenant la liste des produits en format JSON.
+     */
     @GET
     @Path("/product")
     @Produces("application/json")
@@ -85,6 +130,12 @@ public class UserAndProductRessource {
         return Response.ok(products).build();
     }
 
+    /**
+     * Récupère un produit par son ID.
+     *
+     * @param id L'ID du produit.
+     * @return La réponse HTTP contenant le produit en format JSON.
+     */
     @GET
     @Path("/product/{id}")
     @Produces("application/json")
@@ -93,6 +144,12 @@ public class UserAndProductRessource {
         return Response.ok(product).build();
     }
 
+    /**
+     * Crée un nouveau produit.
+     *
+     * @param productJson Le JSON représentant le produit à créer.
+     * @return La réponse HTTP indiquant le statut de la création.
+     */
     @PUT
     @Path("/product/create")
     @Consumes("application/json")
@@ -107,6 +164,12 @@ public class UserAndProductRessource {
         }
     }
 
+    /**
+     * Met à jour un produit existant.
+     *
+     * @param productJson Le JSON représentant le produit à mettre à jour.
+     * @return La réponse HTTP indiquant le statut de la mise à jour.
+     */
     @PUT
     @Path("/product/update")
     @Consumes("application/json")
@@ -121,6 +184,12 @@ public class UserAndProductRessource {
         }
     }
 
+    /**
+     * Supprime un produit par son ID.
+     *
+     * @param id L'ID du produit à supprimer.
+     * @return La réponse HTTP indiquant le statut de la suppression.
+     */
     @DELETE
     @Path("/product/delete/{id}")
     public Response deleteProduct(@PathParam("id") String id) {

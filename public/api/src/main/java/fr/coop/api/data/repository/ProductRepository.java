@@ -10,6 +10,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe pour le dépôt de produits
+ */
 public class ProductRepository extends Repository implements ProductRepositoryInterface {
     public ProductRepository() {
         super();
@@ -19,6 +22,15 @@ public class ProductRepository extends Repository implements ProductRepositoryIn
         super(infoConnection, user, password);
     }*/
 
+    /**
+     * Crée un nouveau produit avec les détails donnés.
+     *
+     * @param name           Le nom du produit.
+     * @param description    La description du produit.
+     * @param availableStock Le stock disponible du produit.
+     * @param unitType       Le type d'unité du produit.
+     * @return L'ID du produit créé.
+     */
     @Override
     public String createProduct(String name, String description, double availableStock, String unitType) {
         String query = "INSERT INTO PRODUCT (NAME, DESCRIPTION, AVAILABLE_STOCK, UNIT_TYPE) VALUES (?, ?, ?, ?)";
@@ -42,6 +54,16 @@ public class ProductRepository extends Repository implements ProductRepositoryIn
         return String.format("P%d", productId);
     }
 
+    /**
+     * Met à jour les détails d'un produit existant.
+     *
+     * @param productId         L'ID du produit à mettre à jour.
+     * @param newName           Le nouveau nom du produit.
+     * @param newDescription    La nouvelle description du produit.
+     * @param newAvailableStock Le nouveau stock disponible du produit.
+     * @param newUnitType       Le nouveau type d'unité du produit.
+     * @return true si la mise à jour a réussi, false sinon.
+     */
     @Override
     public boolean updateProduct(String productId, String newName, String newDescription, double newAvailableStock, String newUnitType) {
         String query = "UPDATE PRODUCT SET NAME = ?, DESCRIPTION = ?, AVAILABLE_STOCK = ?, UNIT_TYPE = ? WHERE ID = ?";
@@ -68,6 +90,12 @@ public class ProductRepository extends Repository implements ProductRepositoryIn
         return updated;
     }
 
+    /**
+     * Supprime un produit avec l'ID donné.
+     *
+     * @param productId L'ID du produit à supprimer.
+     * @return true si la suppression a réussi, false sinon.
+     */
     @Override
     public boolean deleteProduct(String productId) {
         String query = "DELETE FROM PRODUCT WHERE ID = ?";
@@ -90,6 +118,12 @@ public class ProductRepository extends Repository implements ProductRepositoryIn
         return deleted;
     }
 
+    /**
+     * Récupère un produit avec l'ID donné.
+     *
+     * @param productId L'ID du produit à récupérer.
+     * @return Le produit avec l'ID donné, ou null s'il n'est pas trouvé.
+     */
     @Override
     public Product getProduct(String productId) {
         String query = "SELECT * FROM PRODUCT WHERE ID = ?";
@@ -121,6 +155,11 @@ public class ProductRepository extends Repository implements ProductRepositoryIn
         return product;
     }
 
+    /**
+     * Récupère tous les produits.
+     *
+     * @return Une liste de tous les produits.
+     */
     @Override
     public List<Product> getAllProducts() {
         String query = "SELECT * FROM PRODUCT";

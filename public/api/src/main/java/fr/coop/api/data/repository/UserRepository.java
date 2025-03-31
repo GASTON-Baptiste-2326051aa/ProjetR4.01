@@ -10,6 +10,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe pour le dépôt d'utilisateurs
+ */
 public class UserRepository extends Repository implements UserRepositoryInterface {
     public UserRepository() {
         super();
@@ -19,6 +22,14 @@ public class UserRepository extends Repository implements UserRepositoryInterfac
         super(infoConnection, user, password);
     }*/
 
+    /**
+     * Crée un nouvel utilisateur avec les détails donnés.
+     *
+     * @param firstName Le prénom de l'utilisateur.
+     * @param name      Le nom de l'utilisateur.
+     * @param password  Le mot de passe de l'utilisateur.
+     * @return L'ID de l'utilisateur créé.
+     */
     @Override
     public String createUser(String firstName, String name, String password) {
         String query = "INSERT INTO USER (FIRST_NAME, NAME, PASSWORD) VALUES (?, ?, ?)";
@@ -41,6 +52,15 @@ public class UserRepository extends Repository implements UserRepositoryInterfac
         return String.format("U%d", userId);
     }
 
+    /**
+     * Met à jour les détails d'un utilisateur existant.
+     *
+     * @param userId      L'ID de l'utilisateur à mettre à jour.
+     * @param firstName   Le nouveau prénom de l'utilisateur.
+     * @param name        Le nouveau nom de l'utilisateur.
+     * @param newPassword Le nouveau mot de passe de l'utilisateur.
+     * @return true si la mise à jour a réussi, false sinon.
+     */
     @Override
     public boolean updateUser(String userId, String firstName, String name, String newPassword) {
         String query = "UPDATE USER SET first_name = ?, name = ?, password = ? WHERE id = ?";
@@ -66,6 +86,12 @@ public class UserRepository extends Repository implements UserRepositoryInterfac
         return updated;
     }
 
+    /**
+     * Supprime un utilisateur avec l'ID donné.
+     *
+     * @param userId L'ID de l'utilisateur à supprimer.
+     * @return true si la suppression a réussi, false sinon.
+     */
     @Override
     public boolean deleteUser(String userId) {
         String query = "DELETE FROM USER WHERE id = ?";
@@ -88,6 +114,12 @@ public class UserRepository extends Repository implements UserRepositoryInterfac
         return deleted;
     }
 
+    /**
+     * Récupère un utilisateur avec l'ID donné.
+     *
+     * @param userId L'ID de l'utilisateur à récupérer.
+     * @return L'utilisateur avec l'ID donné, ou null s'il n'est pas trouvé.
+     */
     @Override
     public User getUser(String userId) {
         User user = null;
@@ -118,6 +150,11 @@ public class UserRepository extends Repository implements UserRepositoryInterfac
         return user;
     }
 
+    /**
+     * Récupère tous les utilisateurs.
+     *
+     * @return Une liste de tous les utilisateurs.
+     */
     @Override
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();

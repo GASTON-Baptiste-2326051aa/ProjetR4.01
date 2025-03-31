@@ -1,5 +1,9 @@
-package fr.univamu.iut.cart;
+package fr.coop.cart;
 
+import fr.coop.api.api.ProductRepositoryAPI;
+import fr.coop.api.api.UserRepositoryAPI;
+import fr.coop.api.data.interfaces.ProductRepositoryInterface;
+import fr.coop.api.data.interfaces.UserRepositoryInterface;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Disposes;
 import jakarta.enterprise.inject.Produces;

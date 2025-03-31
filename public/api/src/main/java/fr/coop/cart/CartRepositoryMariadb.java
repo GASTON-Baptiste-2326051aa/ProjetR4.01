@@ -1,4 +1,4 @@
-package fr.univamu.iut.cart;
+package fr.coop.cart;
 
 import java.io.Closeable;
 import java.sql.*;
@@ -121,4 +121,35 @@ public class CartRepositoryMariadb implements CartRepositoryInterface, Closeable
         }
         return (nbRowModified != 0);
     }
+
+    @Override
+    public boolean removeProduct(String idCart, String idProduct) {
+        String query = "DELETE FROM CART_CONTENT WHERE CART_ID = ? AND PRODUCT_ID = ?";
+        int nbRowModified = 0;
+
+        try (PreparedStatement ps = dbConnection.prepareStatement(query)) {
+            ps.setString(1, idCart);
+            ps.setString(2, idProduct);
+            nbRowModified = ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return (nbRowModified != 0);
+    }
+
+    @Override
+    public boolean addProduct(String idCart, String idProduct) {
+        String query = "INSERT INTO CART_CONTENT (CART_ID, PRODUCT_ID) VALUES (?, ?)";
+        int nbRowModified = 0;
+
+        try (PreparedStatement ps = dbConnection.prepareStatement(query)) {
+            ps.setString(1, idCart);
+            ps.setString(2, idProduct);
+            nbRowModified = ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return (nbRowModified != 0);
+    }
+
 }

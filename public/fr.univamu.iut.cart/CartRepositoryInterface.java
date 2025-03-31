@@ -17,7 +17,7 @@ public interface CartRepositoryInterface {
      * @param id Identifiant du panier.
      * @return Le panier correspondant à l'identifiant, ou null s'il n'existe pas.
      */
-    public Cart getCart(int id);
+    public Cart getCart(String id);
 
     /**
      * Récupère la liste de tous les paniers.

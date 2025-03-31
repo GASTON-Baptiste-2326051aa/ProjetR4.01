@@ -34,7 +34,7 @@ public class CartApplication extends Application {
      */
     @Produces
     private ProductRepositoryInterface connectProductApi(){
-        return new ProductRepositoryAPI("http://localhost:8080/products-1.0-SNAPSHOT/api/");
+        return new ProductRepositoryAPI("http://localhost:8080/api-1.0-SNAPSHOT/api/user_and_product/product");
     }
 
 /**
@@ -43,7 +43,7 @@ public class CartApplication extends Application {
      */
     @Produces
     private UserRepositoryInterface connectUserApi(){
-        return new UserRepositoryAPI("http://localhost:8080/user-1.0-SNAPSHOT/api/");
+        return new UserRepositoryAPI("http://localhost:8080/api-1.0-SNAPSHOT/api/user_and_product/user");
     }
 
     /**

@@ -7,7 +7,7 @@ public class Cart {
     /**
      * Identifiant du panier.
      */
-    protected int id;
+    protected String id;
     /**
      * Nom du panier.
      */
@@ -40,7 +40,7 @@ public class Cart {
      * @param price             Prix du panier.
      * @param available_quantity Quantité disponible du panier.
      */
-    public Cart(int id, String name, String description, int price, int available_quantity) {
+    public Cart(String id, String name, String description, int price, int available_quantity) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -53,7 +53,7 @@ public class Cart {
      *
      * @return L'identifiant du panier.
      */
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -62,7 +62,7 @@ public class Cart {
      *
      * @param id Nouvel identifiant du panier.
      */
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

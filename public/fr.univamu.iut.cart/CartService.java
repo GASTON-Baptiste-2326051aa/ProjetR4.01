@@ -79,7 +79,7 @@ public class CartService {
      * @param idProduct identifiant du produit
      * @return
      */
-    public boolean registerReservation(String idUser, String idProduct) {
+    public boolean registerCart(String idUser, String idProduct) {
         boolean result = false;
 
         Product myProduct = productRepo.getProduct( idProduct );

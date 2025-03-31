@@ -57,7 +57,7 @@ public class CartResource {
     @GET
     @Path("{id}")
     @Produces("application/json")
-    public String getCart(@PathParam("id") int id) {
+    public String getCart(@PathParam("id") String id) {
         String result = service.getCartJSON(id);
 
         // Si le panier n'a pas été trouvé
@@ -76,7 +76,7 @@ public class CartResource {
     @PUT
     @Path("{id}")
     @Consumes("application/json")
-    public Response updateCart(@PathParam("id") int id, Cart cart) {
+    public Response updateCart(@PathParam("id") String id, Cart cart) {
         // Si le panier n'a pas été trouvé
         if (!service.updateCart(id, cart))
             throw new NotFoundException();
@@ -91,7 +91,7 @@ public class CartResource {
      */
     @DELETE
     @Path("{reference}")
-    public Response removeCart(@PathParam("id") int id){
+    public Response removeCart(@PathParam("id") String id){
 
         if( service.removeCart(id) )
             return Response.ok("removed").build();

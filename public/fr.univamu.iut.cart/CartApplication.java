@@ -21,11 +21,29 @@ public class CartApplication extends Application {
         CartRepositoryMariadb db = null;
 
         try {
-            db = new CartRepositoryMariadb("jdbc:mariadb://mysql-[compte].alwaysdata.net/[compte]_library_db", "[compte]_library", "mdp");
+            db = new CartRepositoryMariadb("jdbc:mariadb://mysql-cooperativejavaiutaix.alwaysdata.net", "405910", "azerty123456789_");
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
         return db;
+    }
+
+    /**
+     * Méthode appelée par l'API CDI pour injecter l'API Produits au moment de la création de la ressource
+     * @return une instance de l'API avec l'url à utiliser
+     */
+    @Produces
+    private ProductRepositoryInterface connectProductApi(){
+        return new ProductRepositoryAPI("http://localhost:8080/products-1.0-SNAPSHOT/api/");
+    }
+
+/**
+     * Méthode appelée par l'API CDI pour injecter l'API User au moment de la création de la ressource
+     * @return une instance de l'API avec l'url à utiliser
+     */
+    @Produces
+    private UserRepositoryInterface connectUserApi(){
+        return new UserRepositoryAPI("http://localhost:8080/user-1.0-SNAPSHOT/api/");
     }
 
     /**
@@ -36,21 +54,5 @@ public class CartApplication extends Application {
         cartRepo.close();
     }
 
-    /**
-     * Méthode appelée par l'API CDI pour injecter l'API Book au moment de la création de la ressource
-     * @return une instance de l'API avec l'url à utiliser
-     */
-    @Produces
-    private BookRepositoryInterface connectBookApi(){
-        return new BookRepositoryAPI("http://localhost:8080/book-1.0-SNAPSHOT/api/");
-    }
 
-    /**
-     * Méthode appelée par l'API CDI pour injecter l'API User au moment de la création de la ressource
-     * @return une instance de l'API avec l'url à utiliser
-     */
-    @Produces
-    private UserRepositoryInterface connectUserApi(){
-        return new UserRepositoryAPI("http://localhost:8080/user-1.0-SNAPSHOT/api/");
-    }
 }

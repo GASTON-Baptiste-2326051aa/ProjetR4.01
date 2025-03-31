@@ -85,15 +85,15 @@ public class CartResource {
     }
 
     /**
-     * Endpoint permettant de supprimer une réservation
-     * @param reference référence du livre à "libérer"
-     * @return un objet Response indiquant "removed" si la réservation a été annulée ou une erreur "not found" sinon
+     * Endpoint permettant de supprimer un panier
+     * @param id identifiant du produit à "libérer"
+     * @return un objet Response indiquant "removed" si le panier a été annulé ou une erreur "not found" sinon
      */
     @DELETE
     @Path("{reference}")
-    public Response removeReservation(@PathParam("reference") String reference){
+    public Response removeCart(@PathParam("id") int id){
 
-        if( service.removeReservation(reference) )
+        if( service.removeCart(id) )
             return Response.ok("removed").build();
         else
             return Response.status( Response.Status.NOT_FOUND ).build();

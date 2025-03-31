@@ -1,8 +1,6 @@
 package fr.coop.api.data;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class MariaDBRepository {
     private final String url;
@@ -26,10 +24,13 @@ public class MariaDBRepository {
 
     private Connection createConnection() {
         try {
+            Class.forName("org.mariadb.jdbc.Driver");
             return DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
             System.err.println("Error establishing database connection: " + e.getMessage());
             return null;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 

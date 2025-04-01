@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * Classe utilisée pour récupérer les informations des paniers et les formater en JSON
  */
 @RequestScoped
-@Path("/cart")
+@Path("/carts")
 @Produces("application/json")
 public class CartService {
 

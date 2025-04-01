@@ -54,4 +54,7 @@ public interface CartRepositoryInterface {
      * @return
      */
     public boolean addProduct(String idCart, String idProduct);
+
+
+    public boolean updateProduct(String idCart, String idProduct);
 }

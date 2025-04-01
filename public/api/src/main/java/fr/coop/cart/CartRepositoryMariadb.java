@@ -46,7 +46,7 @@ public class CartRepositoryMariadb implements CartRepositoryInterface, Closeable
     @Override
     public Cart getCart(String id) {
         Cart selectedCart = null;
-        String query = "SELECT * FROM Cart WHERE id=?";
+        String query = "SELECT * FROM CART WHERE id=?";
 
         try (PreparedStatement ps = dbConnection.prepareStatement(query)) {
             ps.setInt(1, Integer.parseInt(id));
@@ -74,7 +74,7 @@ public class CartRepositoryMariadb implements CartRepositoryInterface, Closeable
     @Override
     public ArrayList<Cart> getAllCarts() {
         ArrayList<Cart> listCarts = new ArrayList<>();
-        String query = "SELECT * FROM Cart";
+        String query = "SELECT * FROM CART";
 
         try (PreparedStatement ps = dbConnection.prepareStatement(query)) {
             ResultSet result = ps.executeQuery();
@@ -105,7 +105,7 @@ public class CartRepositoryMariadb implements CartRepositoryInterface, Closeable
      */
     @Override
     public boolean updateCart(int id, String name, String description, int price, int available_quantity) {
-        String query = "UPDATE Cart SET name=?, description=?, price=?, available_quantity=? WHERE id=?";
+        String query = "UPDATE CART SET name=?, description=?, price=?, available_quantity=? WHERE id=?";
         int nbRowModified = 0;
 
         try (PreparedStatement ps = dbConnection.prepareStatement(query)) {
@@ -150,6 +150,16 @@ public class CartRepositoryMariadb implements CartRepositoryInterface, Closeable
             throw new RuntimeException(e);
         }
         return (nbRowModified != 0);
+    }
+
+    /**
+     * @param idCart
+     * @param idProduct
+     * @return
+     */
+    @Override
+    public boolean updateProduct(String idCart, String idProduct) {
+        return false;
     }
 
 }

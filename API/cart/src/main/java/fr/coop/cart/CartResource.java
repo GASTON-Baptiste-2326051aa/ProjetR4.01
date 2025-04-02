@@ -94,9 +94,9 @@ public class CartResource {
      */
     @DELETE
     @Path("{id}")
-    public Response removeCart(@PathParam("id") String id){
+    public Response deleteCart(@PathParam("id") String id){
 
-        if(service.removeCart(id))
+        if(service.deleteCart(id))
             return Response.ok("removed").build();
         else
             return Response.status( Response.Status.NOT_FOUND ).build();

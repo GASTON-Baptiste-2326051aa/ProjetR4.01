@@ -112,7 +112,7 @@ public class CartService {
      * @param id identifiant du panier à supprimer
      * @return true si le panier a été supprimé, false sinon
      */
-    public boolean removeCart(String id) {
+    public boolean deleteCart(String id) {
         return cartRepo.deleteCart(id);
     }
 }

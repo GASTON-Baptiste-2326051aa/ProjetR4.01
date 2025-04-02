@@ -67,7 +67,7 @@ public class UserRepository extends Repository implements UserRepositoryInterfac
     public boolean updateUser(String userId, String firstName, String name, String newPassword) {
         String query = "UPDATE USER SET first_name = ?, name = ?, password = ? WHERE id = ?";
         boolean updated = false;
-        int id = Integer.parseInt(userId.substring(1));
+        int id = Integer.parseInt(userId);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, firstName);
@@ -92,7 +92,7 @@ public class UserRepository extends Repository implements UserRepositoryInterfac
     public boolean deleteUser(String userId) {
         String query = "DELETE FROM USER WHERE id = ?";
         boolean deleted = false;
-        int id = Integer.parseInt(userId.substring(1));
+        int id = Integer.parseInt(userId);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
@@ -114,7 +114,7 @@ public class UserRepository extends Repository implements UserRepositoryInterfac
     public User getUser(String userId) {
         User user = null;
         String query = "SELECT * FROM USER WHERE id = ?";
-        int id = Integer.parseInt(userId.substring(1));
+        int id = Integer.parseInt(userId);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
@@ -173,7 +173,7 @@ public class UserRepository extends Repository implements UserRepositoryInterfac
     public boolean isUserExist(String userId, String password) {
         String query = "SELECT * FROM USER WHERE id = ? AND password = ?";
         boolean exists = false;
-        int id = Integer.parseInt(userId.substring(1));
+        int id = Integer.parseInt(userId);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);

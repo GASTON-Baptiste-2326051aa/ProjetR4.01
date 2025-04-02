@@ -120,19 +120,43 @@ public class UserAndProductRessource {
     /**
      * Vérifie si un utilisateur existe avec l'ID et le mot de passe donnés.
      *
-     * @param id       L'ID de l'utilisateur.
-     * @param password Le mot de passe de l'utilisateur.
+     * @param json Le JSON contenant l'ID et le mot de passe de l'utilisateur.
      * @return La réponse HTTP indiquant si l'utilisateur existe ou non.
      */
     @GET
-    @Path("/user/exists/{id}/{password}")
+    @Path("/user/exists")
+    @Consumes("application/json")
     @Produces("application/json")
-    public Response isUserExist(@PathParam("id") String id, @PathParam("password") String password) {
-        boolean exists = userAndProductService.isUserExist(id, password);
-        if (exists) {
-            return Response.ok("{\"exists\": true}").build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("{\"exists\": false}").build();
+    public Response isUserExist(String json) {
+        try {
+            Jsonb jsonb = JsonbBuilder.create();
+            UserCredentials credentials = jsonb.fromJson(json, UserCredentials.class);
+            boolean exists = userAndProductService.isUserExist(credentials.getId(), credentials.getPassword());
+            if (exists) {
+                return Response.ok("{\"exists\": true}").build();
+            } else {
+                return Response.status(Response.Status.NOT_FOUND).entity("{\"exists\": false}").build();
+            }
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid JSON").build();
+        }
+    }
+
+    public static class UserCredentials {
+        private final String id;
+        private final String password;
+
+        public UserCredentials(String id, String password) {
+            this.id = id;
+            this.password = password;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public String getPassword() {
+            return password;
         }
     }
 

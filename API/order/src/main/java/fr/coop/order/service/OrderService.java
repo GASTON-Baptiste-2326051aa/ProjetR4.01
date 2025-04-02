@@ -71,10 +71,10 @@ public class OrderService {
     /**
      * Méthode permettant de mettre à jours les informations d'une commande
      * @param id identifiant de la commande à mettre à jours
-     * @param order les nouvelles infromations a utiliser
-     * @return true si la commande a pu être mise à jours
+     * @param order les nouvelles informations a utiliser
+     * @return true si la commande a pu être mise à jours, false sinon
      */
     public boolean updateOrder(String id, Order order) {
-        return orderRepo.updateOrder(id, order.getUserId(), order.getDate(), order.getRelayAddress(), String.valueOf(order.valid));
+        return orderRepo.updateOrder(id, order.getUserId(), order.getDate(), order.getRelayAddress(), String.valueOf(order.getValid()));
     }
 }

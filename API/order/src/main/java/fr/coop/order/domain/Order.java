@@ -33,7 +33,7 @@ public class Order {
     /**
      * Si la commande a été validée
      */
-    public boolean valid;
+    protected boolean valid;
 
     /**
      * Constructeur par défaut

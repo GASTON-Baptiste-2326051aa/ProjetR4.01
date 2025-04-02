@@ -1,4 +1,6 @@
-package fr.coop.cart;
+package fr.coop.cart.data;
+
+import fr.coop.cart.domain.Cart;
 
 import java.io.Closeable;
 import java.sql.*;

@@ -1,7 +1,8 @@
 package fr.coop.cart;
 
-import fr.coop.cart.other_api.ProductRepositoryInterface;
-import fr.coop.cart.other_api.UserRepositoryInterface;
+import fr.coop.cart.domain.Cart;
+import fr.coop.cart.data.CartRepositoryInterface;
+import fr.coop.cart.service.CartService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;

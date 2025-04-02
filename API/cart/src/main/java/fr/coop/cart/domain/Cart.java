@@ -1,4 +1,4 @@
-package fr.coop.cart;
+package fr.coop.cart.domain;
 
 /**
  * Classe représentant un panier.

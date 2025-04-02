@@ -1,7 +1,8 @@
 package fr.coop.cart;
 
-import fr.coop.cart.other_api.*;
+import fr.coop.cart.data.CartRepositoryInterface;
 
+import fr.coop.cart.data.CartRepositoryMariadb;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Disposes;
 import jakarta.enterprise.inject.Produces;

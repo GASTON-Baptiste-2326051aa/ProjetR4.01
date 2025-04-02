@@ -1,8 +1,8 @@
-package fr.coop.cart;
+package fr.coop.cart.service;
 
-import fr.coop.cart.other_api.Product;
-import fr.coop.cart.other_api.ProductRepositoryInterface;
-import fr.coop.cart.other_api.UserRepositoryInterface;
+import fr.coop.cart.data.CartRepositoryInterface;
+import fr.coop.cart.domain.Cart;
+
 import java.util.ArrayList;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;

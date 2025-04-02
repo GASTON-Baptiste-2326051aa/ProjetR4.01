@@ -24,10 +24,6 @@ public class CartService {
     protected final ProductRepositoryInterface productRepo;
     protected final CartRepositoryInterface cartRepo;
 
-    /**
-     * Constructeur permettant d'injecter l'accès aux données
-     * @param cartRepo objet implémentant l'interface d'accès aux données
-     */
     @Inject
     public CartService(CartRepositoryInterface cartRepo, UserRepositoryInterface userRepo, ProductRepositoryInterface productRepo) {
         this.cartRepo = cartRepo;
@@ -35,130 +31,64 @@ public class CartService {
         this.productRepo = productRepo;
     }
 
-    /**
-     * Récupère tous les paniers et les retourne en format JSON
-     * @return une chaîne de caractères contenant la liste des paniers en JSON
-     */
+    @GET
     public String getAllCartsJSON() {
         ArrayList<Cart> allCarts = cartRepo.getAllCarts();
-        String result = null;
-
         try (Jsonb jsonb = JsonbBuilder.create()) {
-            result = jsonb.toJson(allCarts);
+            return jsonb.toJson(allCarts);
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            throw new WebApplicationException("Error generating JSON", Response.Status.INTERNAL_SERVER_ERROR);
         }
-
-        return result;
     }
 
-    /**
-     * Récupère un panier spécifique en fonction de son ID et le retourne en JSON
-     * @param id identifiant du panier recherché
-     * @return une chaîne JSON représentant le panier
-     */
-    public String getCartJSON(String id) {
-        String result = null;
+    @GET
+    @Path("/{id}")
+    public String getCartJSON(@PathParam("id") String id) {
         Cart myCart = cartRepo.getCart(id);
-
-        if (myCart != null) {
-            try (Jsonb jsonb = JsonbBuilder.create()) {
-                result = jsonb.toJson(myCart);
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
-            }
+        if (myCart == null) {
+            throw new NotFoundException("Cart not found");
         }
-
-        return result;
+        try (Jsonb jsonb = JsonbBuilder.create()) {
+            return jsonb.toJson(myCart);
+        } catch (Exception e) {
+            throw new WebApplicationException("Error generating JSON", Response.Status.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    /**
-     * Met à jour un panier dans la base de données
-     * @param id identifiant du panier à mettre à jour
-     * @param cart nouvel objet contenant les informations mises à jour
-     * @return true si la mise à jour a réussi, false sinon
-     */
-    public boolean updateCart(String id, Cart cart) {
+    @PUT
+    @Path("/{id}")
+    @Consumes("application/json")
+    public boolean updateCart(@PathParam("id") String id, Cart cart) {
         return cartRepo.updateCart(id, cart.name, cart.description, cart.price, cart.available_quantity);
     }
 
-    /**
-     * Méthode permettant d'ajouter un produit à un panier pour un utilisateur donné
-     * @param idUser identifiant de l'utilisateur
-     * @param idProduct identifiant du produit
-     * @return true si l'ajout a réussi, false sinon
-     */
-    public boolean addProductToCart(String idUser, String idProduct) {
-        boolean result;
-
-        Product myProduct = productRepo.getProduct(idProduct);
-
-        if (myProduct == null)
-            throw new NotFoundException("Product not found");
-
-        User myUser = userRepo.getUser(idUser);
-
-        if (myUser == null)
-            throw new NotFoundException("User not found");
-
-        // Ajouter le produit au panier
-        result = cartRepo.addProduct(idUser, idProduct);
-
-        return result;
-    }
-
-    /**
-     * Endpoint permettant d'ajouter un produit au panier
-     * @param idUser identifiant de l'utilisateur
-     * @param idProduct identifiant du produit
-     * @return une réponse HTTP indiquant "added" si l'ajout a été effectué, ou "conflict" en cas d'erreur
-     */
     @POST
     @Consumes("application/x-www-form-urlencoded")
-    public Response addProduct(@FormParam("idUser") String idUser, @FormParam("idProduct") String idProduct) {
-
-        if (addProductToCart(idUser, idProduct))
+    public Response addProduct(@FormParam("idCart") String idCart, @FormParam("idProduct") String idProduct) {
+        if (cartRepo.addProduct(idCart, idProduct)) {
             return Response.ok("added").build();
-        else
+        } else {
             return Response.status(Response.Status.CONFLICT).build();
+        }
     }
 
-    /**
-     * Méthode supprimant un produit d'un panier
-     * @param idCart identifiant du panier
-     * @param idProduct identifiant du produit à retirer
-     * @return true si le produit a été retiré, false sinon
-     */
-    public boolean removeProductFromCart(String idCart, String idProduct) {
-        boolean result;
-
-        Product myProduct = productRepo.getProduct(idProduct);
-
-        if (myProduct == null)
-            throw new NotFoundException("Product not found");
-
-        result = cartRepo.removeProduct(idCart, idProduct);
-
-        return result;
-    }
-
-    /**
-     * Endpoint permettant de retirer un produit d'un panier
-     * @param idCart identifiant du panier
-     * @param idProduct identifiant du produit à retirer
-     * @return une réponse HTTP indiquant "removed" si le produit a été retiré, ou "not found" sinon
-     */
     @DELETE
-    @Path("{idCart}/{idProduct}")
+    @Path("/{idCart}/{idProduct}")
     public Response removeProduct(@PathParam("idCart") String idCart, @PathParam("idProduct") String idProduct) {
-
-        if (removeProductFromCart(idCart, idProduct))
+        if (cartRepo.removeProduct(idCart, idProduct)) {
             return Response.ok("removed").build();
-        else
+        } else {
             return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 
-    public boolean removeCart(String id) {
-        return false;
+    @DELETE
+    @Path("/{id}")
+    public Response removeCart(@PathParam("id") String id) {
+        if (cartRepo.deleteCart(id)) {
+            return Response.ok("deleted").build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 }

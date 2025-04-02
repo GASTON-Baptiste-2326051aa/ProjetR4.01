@@ -70,7 +70,7 @@ public class ProductRepository extends Repository implements ProductRepositoryIn
     public boolean updateProduct(String productId, String newName, String newDescription, double newAvailableStock, String newUnitType) {
         String query = "UPDATE PRODUCT SET NAME = ?, DESCRIPTION = ?, AVAILABLE_STOCK = ?, UNIT_TYPE = ? WHERE ID = ?";
         boolean updated = false;
-        int id = Integer.parseInt(productId.substring(1));
+        int id = Integer.parseInt(productId);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, newName);
@@ -96,7 +96,7 @@ public class ProductRepository extends Repository implements ProductRepositoryIn
     public boolean deleteProduct(String productId) {
         String query = "DELETE FROM PRODUCT WHERE ID = ?";
         boolean deleted = false;
-        int id = Integer.parseInt(productId.substring(1));
+        int id = Integer.parseInt(productId);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);
@@ -118,7 +118,7 @@ public class ProductRepository extends Repository implements ProductRepositoryIn
     public Product getProduct(String productId) {
         String query = "SELECT * FROM PRODUCT WHERE ID = ?";
         Product product = null;
-        int id = Integer.parseInt(productId.substring(1));
+        int id = Integer.parseInt(productId);
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, id);

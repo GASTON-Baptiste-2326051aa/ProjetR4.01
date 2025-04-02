@@ -56,7 +56,7 @@ public class CartRepositoryMariadb implements CartRepositoryInterface, Closeable
             ResultSet result = ps.executeQuery();
 
             if (!result.isBeforeFirst()) {
-                return null;
+                return selectedCart;
             }
 
             ArrayList<String> productIds = new ArrayList<>();

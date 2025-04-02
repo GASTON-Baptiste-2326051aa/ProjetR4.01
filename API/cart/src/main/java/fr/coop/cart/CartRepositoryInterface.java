@@ -54,13 +54,6 @@ public interface CartRepositoryInterface {
      */
     public boolean deleteCart(String id);
 
-    /**
-     * Retire un produit d'un panier.
-     * @param idCart Identifiant du panier.
-     * @param idProduct Identifiant du produit.
-     * @return true si la mise à jour a réussi, false sinon.
-     */
-    public boolean removeProduct(String idCart, String idProduct);
 
     /**
      * Ajoute un produit à un panier.
@@ -69,4 +62,15 @@ public interface CartRepositoryInterface {
      * @return true si la mise à jour a réussi, false sinon.
      */
     public boolean addProduct(String idCart, String idProduct);
+
+
+    /**
+     * Retire un produit d'un panier.
+     * @param idCart Identifiant du panier.
+     * @param idProduct Identifiant du produit.
+     * @return true si la mise à jour a réussi, false sinon.
+     */
+    public boolean removeProduct(String idCart, String idProduct);
+
+
 }

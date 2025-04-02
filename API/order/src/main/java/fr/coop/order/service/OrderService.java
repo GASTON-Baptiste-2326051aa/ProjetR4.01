@@ -69,12 +69,50 @@ public class OrderService {
     }
 
     /**
-     * Méthode permettant de mettre à jours les informations d'une commande
-     * @param id identifiant de la commande à mettre à jours
+     * Méthode permettant d'enregistrer une commande
+     * @param order les informations de la commande
+     * @return trye si la commande a pu être créée, false sinon
+     */
+    public boolean addOrder(Order order) {
+        return orderRepo.addOrder(order.getId(), order.getUserId(), order.getDate(), order.getRelayAddress(), String.valueOf(order.getValid()));
+    }
+
+    /**
+     * Méthode permettant de mettre à jour les informations d'une commande
+     * @param id identifiant de la commande à mettre à jour
      * @param order les nouvelles informations a utiliser
-     * @return true si la commande a pu être mise à jours, false sinon
+     * @return true si la commande a pu être mise à jour, false sinon
      */
     public boolean updateOrder(String id, Order order) {
         return orderRepo.updateOrder(id, order.getUserId(), order.getDate(), order.getRelayAddress(), String.valueOf(order.getValid()));
+    }
+
+    /**
+     * Méthode permettant de supprimer une commande
+     * @param id identifiant de la commande à supprimer
+     * @return true si la commande a été supprimée, false sinon
+     */
+    public boolean deleteOrder(String id) {
+        return orderRepo.deleteOrder(id);
+    }
+
+    /**
+     * Méthode permettant d'ajouter un panier à une commande
+     * @param id identifiant de la commande
+     * @param cartId identifiant du panier
+     * @return true si la commande a pu être mise à jour, false sinon
+     */
+    public boolean addCart(String id, String cartId) {
+        return orderRepo.addCart(id, cartId);
+    }
+
+    /**
+     * Méthode permettant de retirer un panier d'une commande
+     * @param id identifiant de la commande
+     * @param cartId identifiant du panier
+     * @return true si la commande a pu être mise à jour, false sinon
+     */
+    public boolean removeCart(String id, String cartId) {
+        return orderRepo.removeCart(id, cartId);
     }
 }

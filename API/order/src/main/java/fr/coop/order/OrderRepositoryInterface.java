@@ -34,5 +34,5 @@ public interface OrderRepositoryInterface {
      * @param valid nouvel état de la commande
      * @return true si la commande existe et la mise à jours a été faite, false sinon
      */
-    public boolean updateOrder( String id, String userId, String date, String relayAddress, boolean valid);
+    public boolean updateOrder( String id, String userId, String date, String relayAddress, String valid);
 }

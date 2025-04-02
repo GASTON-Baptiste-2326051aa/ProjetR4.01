@@ -73,6 +73,6 @@ public class OrderService {
      * @return true si la commande a pu être mise à jours
      */
     public boolean updateOrder(String id, Order order) {
-        return orderRepo.updateOrder(id, order.userId, order.date, order.relayAddress, order.valid);
+        return orderRepo.updateOrder(id, order.userId, order.date, order.relayAddress, String.valueOf(order.valid));
     }
 }

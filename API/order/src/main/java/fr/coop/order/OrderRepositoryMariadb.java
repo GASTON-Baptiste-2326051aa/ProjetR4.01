@@ -44,7 +44,7 @@ public class OrderRepositoryMariadb implements OrderRepositoryInterface, Closeab
         String query = "SELECT * FROM `ORDER` JOIN ORDER_CONTENT ON `ORDER`.ID = ORDER_CONTENT.ORDER_ID WHERE `ORDER`.ID=?";
 
         // construction et exécution d'une requête préparée
-        try ( PreparedStatement ps = dbConnection.prepareStatement(query) ){
+        try (PreparedStatement ps = dbConnection.prepareStatement(query)) {
             ps.setInt(1, Integer.parseInt(id));
 
             // exécution de la requête
@@ -82,7 +82,7 @@ public class OrderRepositoryMariadb implements OrderRepositoryInterface, Closeab
 
         String query = "SELECT * FROM `ORDER` JOIN ORDER_CONTENT ON `ORDER`.ID = ORDER_CONTENT.ORDER_ID ORDER BY `ORDER`.ID";
 
-        try (PreparedStatement ps = dbConnection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+        try (PreparedStatement ps = dbConnection.prepareStatement(query)) {
 
             ResultSet result = ps.executeQuery();
 
@@ -125,17 +125,17 @@ public class OrderRepositoryMariadb implements OrderRepositoryInterface, Closeab
 
 
     @Override
-    public boolean updateOrder( String id, String userId, String date, String relayAddress, boolean valid) {
+    public boolean updateOrder( String id, String userId, String date, String relayAddress, String valid) {
         String query = "UPDATE `ORDER` SET USER_ID=?, LIMIT_DATE=?, RELAY_ADDRESS=?, IS_VALIDATE=? WHERE ID=?";
         int nbRowModified = 0;
 
         // construction et exécution d'une requête préparée
         try ( PreparedStatement ps = dbConnection.prepareStatement(query) ){
-            ps.setString(1, userId);
-            ps.setString(2, date);
+            ps.setInt(1, Integer.parseInt(userId));
+            ps.setDate(2, Date.valueOf(date));
             ps.setString(3, relayAddress );
-            ps.setString(4, String.valueOf(valid));
-            ps.setString(5, id);
+            ps.setBoolean(4, Boolean.parseBoolean(valid));
+            ps.setInt(5, Integer.parseInt(id));
 
             // exécution de la requête
             nbRowModified = ps.executeUpdate();

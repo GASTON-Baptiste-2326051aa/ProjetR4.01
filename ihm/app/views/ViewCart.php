@@ -1,8 +1,7 @@
 <?php
 
-namespace view;
+namespace views;
 
-use views\ViewLayout;
 
 class ViewCart
 {

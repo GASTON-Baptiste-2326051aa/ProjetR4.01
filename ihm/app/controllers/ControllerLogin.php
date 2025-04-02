@@ -1,8 +1,8 @@
 <?php
-namespace controller;
+namespace controllers;
 use Exception;
-use model\service\ModelApiProductUser;
-use view\ViewLogin;
+use models\service\ModelApiProductUser;
+use views\ViewLogin;
 
 class ControllerLogin implements Controller
 {

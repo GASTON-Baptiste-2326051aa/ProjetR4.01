@@ -1,7 +1,7 @@
 <?php
 
-namespace controller;
-use view\ViewCart;
+namespace controllers;
+use views\ViewCart;
 
 class ControllerCart implements Controller
 {

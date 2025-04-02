@@ -1,6 +1,6 @@
 <?php
 
-namespace model\service;
+namespace models\service;
 use Exception;
 
 class ModelApiProductUser extends ModelApi

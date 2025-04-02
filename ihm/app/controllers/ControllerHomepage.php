@@ -1,10 +1,10 @@
 <?php
 
-namespace controller;
+namespace controllers;
 
 use Exception;
-use model\service\ModelApiCart;
-use view\ViewHomepage;
+use models\service\ModelApiCart;
+use views\ViewHomepage;
 
 
 class ControllerHomepage implements Controller

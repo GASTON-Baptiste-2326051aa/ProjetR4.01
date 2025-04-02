@@ -1,7 +1,7 @@
 <?php
 
 
-namespace model\service;
+namespace models\service;
 use Exception;
 
 class ModelApiCart extends ModelApi

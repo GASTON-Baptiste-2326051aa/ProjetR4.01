@@ -1,6 +1,7 @@
 <?php
 
-use controller\ControllerHomepage;
+use controllers\ControllerHomepage;
+use controllers\ControllerLogin;
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
@@ -8,11 +9,11 @@ if (session_status() == PHP_SESSION_NONE) {
 
 require '../ihm/includes/autoload.php';
 
-include '../ihm/app/controller/ControllerHomepage.php';
+include '../ihm/app/controllers/ControllerHomepage.php';
 
 try {
     if (!isset($_SESSION['logged'])) {
-        $controller = new ControllerHomepage();
+        $controller = new ControllerLogin();
         $controller->execute();
     }
     if (filter_input(INPUT_GET, 'action')) {

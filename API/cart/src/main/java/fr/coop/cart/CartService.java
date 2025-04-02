@@ -78,7 +78,7 @@ public class CartService {
      * @param cart nouvel objet contenant les informations mises à jour
      * @return true si la mise à jour a réussi, false sinon
      */
-    public boolean updateCart(int id, Cart cart) {
+    public boolean updateCart(String id, Cart cart) {
         return cartRepo.updateCart(id, cart.name, cart.description, cart.price, cart.available_quantity);
     }
 

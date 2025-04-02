@@ -81,7 +81,7 @@ public class CartResource {
     @Consumes("application/json")
     public Response updateCart(@PathParam("id") String id, Cart cart) {
         // Si le panier n'a pas été trouvé
-        if (!service.updateCart(Integer.parseInt(id), cart))
+        if (!service.updateCart(id, cart))
             throw new NotFoundException();
         else
             return Response.ok("updated").build();

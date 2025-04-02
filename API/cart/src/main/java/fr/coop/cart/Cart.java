@@ -19,11 +19,13 @@ public class Cart {
     /**
      * Prix du panier.
      */
-    protected int price;
+    protected double price;
     /**
      * Quantité disponible.
      */
     protected int available_quantity;
+
+    protected String[] productId;
 
     /**
      * Constructeur par défaut.
@@ -40,10 +42,11 @@ public class Cart {
      * @param price             Prix du panier.
      * @param available_quantity Quantité disponible du panier.
      */
-    public Cart(String id, String name, String description, int price, int available_quantity) {
+    public Cart(String id, String name, String description, double price, int available_quantity) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.productId = new String[0];
         this.price = price;
         this.available_quantity = available_quantity;
     }
@@ -107,7 +110,7 @@ public class Cart {
      *
      * @return Le prix du panier.
      */
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
@@ -139,6 +142,36 @@ public class Cart {
     }
 
     /**
+     * Méthode permettant d'accéder aux identifiants des produits
+     * @return les identifiants des produits
+     */
+    public String[] getProductId() {
+        return productId;
+    }
+
+    /**
+     * Méthode permettant de modifier les identifiants des produits
+     * @param productId un tableau contenant les identifiants à utiliser
+     */
+    public void setProductId(String[] productId) {
+        this.productId = productId;
+    }
+
+
+    /**
+     * Méthode mettant tous les identifiants des produits dans une chaîne de caractères
+     * @return une chaîne de caractères contenant les identifiants des produits
+     */
+    public String productIdToString() {
+        String productIdString = "[";
+        for (String id : productId) {
+            productIdString += "'" + id + "', ";
+        }
+        productIdString = productIdString.substring(productIdString.length()-2) + "]";
+        return productIdString;
+    }
+
+    /**
      * Renvoie une représentation textuelle de l'objet.
      *
      * @return Une chaîne contenant les informations du panier.
@@ -151,6 +184,7 @@ public class Cart {
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", available_quantity=" + available_quantity +
+                ", identifiants des paniers=" + productIdToString() +
                 '}';
     }
 }

@@ -173,7 +173,21 @@ public class OrderRepositoryMariadb implements OrderRepositoryInterface, Closeab
 
     @Override
     public boolean deleteOrder(String id) {
-        String query = "DELETE FROM `ORDER` WHERE ID=?";
+
+        // suppression des relations stockant les paniers présents dans la commande
+        String query = "DELETE FROM ORDER_CONTENT WHERE ORDER_ID=?";
+        // construction et exécution d'une requête préparée
+        try ( PreparedStatement ps = dbConnection.prepareStatement(query) ){
+            ps.setInt(1, Integer.parseInt(id));
+
+            // exécution de la requête
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        // suppression de la commande
+        query = "DELETE FROM `ORDER` WHERE ID=?";
         int nbRowModified = 0;
 
         // construction et exécution d'une requête préparée

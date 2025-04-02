@@ -2,7 +2,6 @@ package fr.coop.cart;
 
 import fr.coop.cart.other_api.ProductRepositoryInterface;
 import fr.coop.cart.other_api.UserRepositoryInterface;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -30,8 +29,8 @@ public class CartResource {
      * Constructeur permettant d'initialiser le service avec une interface d'accès aux données
      * @param cartRepo objet implémentant l'interface d'accès aux données
      */
-
-    public @Inject CartResource(CartRepositoryInterface cartRepo, UserRepositoryInterface userRepo, ProductRepositoryInterface productRepo) {
+    @Inject
+    public CartResource(CartRepositoryInterface cartRepo, UserRepositoryInterface userRepo, ProductRepositoryInterface productRepo) {
         this.service = new CartService(cartRepo, userRepo, productRepo);
     }
 
@@ -100,5 +99,41 @@ public class CartResource {
             return Response.ok("removed").build();
         else
             return Response.status( Response.Status.NOT_FOUND ).build();
+    }
+
+    /**
+     * Endpoint permettant d'ajouter un produit au panier
+     * @param idCart identifiant du panier
+     * @param idProduct identifiant du produit à ajouter
+     * @return une réponse indiquant si le produit a été ajouté
+     */
+    @POST
+    @Path("/{idCart}/products/{idProduct}")
+    public Response addProduct(@PathParam("idCart") String idCart, @PathParam("idProduct") String idProduct) {
+        boolean success = service.addProduct(idCart, idProduct);
+
+        if (success) {
+            return Response.ok("Product added").build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+
+    /**
+     * Endpoint permettant de retirer un produit du panier
+     * @param idCart identifiant du panier
+     * @param idProduct identifiant du produit à retirer
+     * @return une réponse indiquant si le produit a été retiré
+     */
+    @DELETE
+    @Path("/{idCart}/products/{idProduct}")
+    public Response removeProduct(@PathParam("idCart") String idCart, @PathParam("idProduct") String idProduct) {
+        boolean success = service.removeProduct(idCart, idProduct);
+
+        if (success) {
+            return Response.ok("Product removed").build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
     }
 }

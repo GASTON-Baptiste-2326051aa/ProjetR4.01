@@ -1,5 +1,7 @@
 package fr.coop.order;
 
+import fr.coop.order.data.OrderRepositoryInterface;
+import fr.coop.order.data.OrderRepositoryMariadb;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Disposes;
 import jakarta.enterprise.inject.Produces;

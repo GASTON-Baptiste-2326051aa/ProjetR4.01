@@ -26,6 +26,17 @@ public interface CartRepositoryInterface {
     public ArrayList<Cart> getAllCarts();
 
     /**
+     * Ajoute un panier.
+     * @param id Identifiant du panier.
+     * @param name Nom du panier.
+     * @param description Description du panier.
+     * @param price Prix du panier.
+     * @param available_quantity Quantité disponible.
+     * @return true si l'ajout a réussi, false sinon.
+     */
+    public boolean addCart(String id, String name, String description, double price, int available_quantity);
+
+    /**
      * Met à jour les informations d'un panier existant.
      * @param id Identifiant du panier à mettre à jour.
      * @param name Nouveau nom du panier.
@@ -34,27 +45,32 @@ public interface CartRepositoryInterface {
      * @param available_quantity Nouvelle quantité disponible.
      * @return true si la mise à jour a réussi, false sinon.
      */
-    public boolean updateCart(int id, String name, String description, int price, int available_quantity);
-
+    public boolean updateCart(String id, String name, String description, double price, int available_quantity);
 
     /**
-     * Retire un produit à un panier
-     * @param idCart identifiant du panier
-     * @param idProduct identifiant du produit
-     * @return
+     * Supprime un panier de la base de données.
+     * @param id Identifiant du panier.
+     * @return true si la suppression a réussi, false sinon.
      */
-    public boolean removeProduct(String idCart, String idProduct);
+    public boolean deleteCart(String id);
 
 
     /**
-     * Ajoute un produit à un panier
-     *
-     * @param idCart    identifiant du panier
-     * @param idProduct identifiant du produit
-     * @return
+     * Ajoute un produit à un panier.
+     * @param idCart Identifiant du panier.
+     * @param idProduct Identifiant du produit.
+     * @return true si la mise à jour a réussi, false sinon.
      */
     public boolean addProduct(String idCart, String idProduct);
 
 
-    public boolean updateProduct(String idCart, String idProduct);
+    /**
+     * Retire un produit d'un panier.
+     * @param idCart Identifiant du panier.
+     * @param idProduct Identifiant du produit.
+     * @return true si la mise à jour a réussi, false sinon.
+     */
+    public boolean removeProduct(String idCart, String idProduct);
+
+
 }

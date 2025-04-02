@@ -17,7 +17,7 @@ class ModelApiCart extends ModelApi
      */
     public function getCart(string $id) : array
     {
-        $url = '/cart' . '/' . $id;
+        $url = '/carts' . '/' . $id;
         return $this->request($url);
     }
 
@@ -26,7 +26,7 @@ class ModelApiCart extends ModelApi
      */
     public function getAllCarts() : array
     {
-        $url = '/cart';
+        $url = '/carts';
         return $this->request($url);
     }
 

@@ -1,0 +1,81 @@
+/* Réinitialisation de base */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+}
+
+section {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+/* Style du conteneur des paniers */
+.paniers-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Style des cartes de paniers */
+.panier-card {
+    background: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    width: 250px;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.panier-card:hover {
+    transform: scale(1.05);
+}
+
+/* Style des liens */
+.panier-card a {
+    text-decoration: none;
+    color: #007BFF;
+    font-weight: bold;
+}
+
+.panier-card a:hover {
+    text-decoration: underline;
+}
+
+/* Style du bouton "Ajouter au panier" */
+.add-to-cart {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 12px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.add-to-cart:hover {
+    background-color: #218838;
+}
+
+/* Style du lien "Voir mon panier" */
+.view-cart {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.view-cart:hover {
+    text-decoration: underline;
+}

@@ -11,7 +11,7 @@ class ControllerHomepage implements Controller
     private modelApiCart $modelApiCart;
     public function __construct()
     {
-        $this->modelApiCart = new ModelApiCart('http://localhost:8080/api-1.0-SNAPSHOT/api/cart');
+        $this->modelApiCart = new ModelApiCart('http://localhost:8080/cart-1.0-SNAPSHOT/api');
     }
 
     /**
@@ -19,8 +19,8 @@ class ControllerHomepage implements Controller
      */
     public function execute() : void
     {
-
+        $carts = $this->modelApiCart->getAllCarts();
         $view = new ViewHomepage();
-        $view->show();
+        $view->show($carts);
     }
 }

@@ -4,7 +4,7 @@ namespace models\service;
 
 use Exception;
 
-class ModelApiCommands extends ModelApi
+class ModelApiOrder extends ModelApi
 {
     public function __construct($link)
     {

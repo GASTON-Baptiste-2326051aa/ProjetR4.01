@@ -42,7 +42,7 @@ public class OrderRepositoryMariadb implements OrderRepositoryInterface, Closeab
 
         Order selectedOrder = null;
 
-        String query = "SELECT * FROM `ORDER` JOIN ORDER_CONTENT ON `ORDER`.ID = ORDER_CONTENT.ORDER_ID WHERE `ORDER`.ID=?";
+        String query = "SELECT * FROM `ORDER` LEFT JOIN ORDER_CONTENT ON `ORDER`.ID = ORDER_CONTENT.ORDER_ID WHERE `ORDER`.ID=?";
 
         // construction et exécution d'une requête préparée
         try (PreparedStatement ps = dbConnection.prepareStatement(query)) {
@@ -81,7 +81,7 @@ public class OrderRepositoryMariadb implements OrderRepositoryInterface, Closeab
     public ArrayList<Order> getAllOrders() {
         ArrayList<Order> listOrders = new ArrayList<>();
 
-        String query = "SELECT * FROM `ORDER` JOIN ORDER_CONTENT ON `ORDER`.ID = ORDER_CONTENT.ORDER_ID ORDER BY `ORDER`.ID";
+        String query = "SELECT * FROM `ORDER` LEFT JOIN ORDER_CONTENT ON `ORDER`.ID = ORDER_CONTENT.ORDER_ID ORDER BY `ORDER`.ID";
 
         try (PreparedStatement ps = dbConnection.prepareStatement(query)) {
 

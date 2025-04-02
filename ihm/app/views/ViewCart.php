@@ -11,7 +11,7 @@ class ViewCart
     {
         ob_start();
         ?>
-        <section>
+        <section class="cart-section">
             <h1>Votre panier : <?= htmlspecialchars($panier['name']) ?></h1>
             <p><strong>Description :</strong> <?= htmlspecialchars($panier['description']) ?></p>
             <p><strong>Prix :</strong> <?= $panier['price'] ?>€</p>
@@ -25,4 +25,3 @@ class ViewCart
         $layout->show();
     }
 }
-

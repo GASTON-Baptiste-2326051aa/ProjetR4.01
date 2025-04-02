@@ -3,39 +3,101 @@
 namespace controllers;
 
 use Exception;
+use models\service\ModelApiCart;
 use models\service\ModelApiOrder;
 use views\ViewOrder;
 
 class ControllerOrder implements Controller
 {
-    private ModelApiOrder $modelApiCommands;
+    private ModelApiOrder $modelApiOrders;
+    private ModelApiCart $modelApiCart;
+
     public function __construct()
     {
-        $this->modelApiCommands = new ModelApiOrder('http://localhost:8080/command-1.0-SNAPSHOT/api/orders');
+        $this->modelApiOrders = new ModelApiOrder('http://localhost:8080/order-1.0-SNAPSHOT/api/orders');
+        $this->modelApiCart = new ModelApiCart('http://localhost:8080/cart-1.0-SNAPSHOT/api');
     }
 
     /**
      * @throws Exception
      */
-    public function execute() : void
+    public function execute(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
-            $id = (int) $_POST['id'];
-            if (!isset($_SESSION['commands'])) {
-                $_SESSION['commands'] = [];
-            }
-            if (!in_array($id, $_SESSION['commands'])) {
-                $_SESSION['commands'][] = $id;
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_GET['delete']) && isset($_POST['id'])) {
+                $this->removeFromOrder((int)$_POST['id']);
+            } elseif (isset($_GET['clear'])) {
+                $this->clearOrder();
+            } elseif (isset($_GET['validate'])) {
+                $this->validateOrder();
+            } elseif (isset($_POST['id'])) {
+                $this->addToOrder((int)$_POST['id']);
             }
         }
-        $infoCommands = [];
-        foreach ($_SESSION['commands'] as $command) {
-            $newCommand = $this->modelApiCommands->getCommand($command);
-            if ($newCommand) {
-                $infoCommands[] = $newCommand;
+
+        $this->showOrder();
+    }
+
+    private function addToOrder(int $id): void
+    {
+        if (!isset($_SESSION['order']) || !is_array($_SESSION['order'])) {
+            $_SESSION['order'] = [];
+        }
+        if (!in_array($id, $_SESSION['order'])) {
+            $_SESSION['order'][] = $id;
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function validateOrder(): void
+    {
+        if (!isset($_SESSION['user']) || empty($_SESSION['order'])) {
+            throw new Exception("Utilisateur non connecté ou panier vide.");
+        }
+
+        $userId = $_SESSION['user'];
+        $cartIds = array_keys($_SESSION['order']);
+        $orderId = time();
+        $date = date('Y-m-d');
+        $relayAddress = "Adresse du relais par défaut";
+        $valid = 'false';
+        $this->modelApiOrders->validateOrder($orderId, $cartIds, $userId, $date, $relayAddress, $valid);
+    }
+
+    private function removeFromOrder(int $id): void
+    {
+        if (isset($_SESSION['order'])) {
+            $_SESSION['order'] = array_filter($_SESSION['order'], fn($cartId) => $cartId !== $id);
+        }
+    }
+
+    private function clearOrder(): void
+    {
+        $_SESSION['order'] = [];
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function showOrder(): void
+    {
+        $infoCarts = [];
+        if (!empty($_SESSION['order'])) {
+            foreach ($_SESSION['order'] as $idCart) {
+                $cart = $this->modelApiCart->getCart($idCart);
+                if ($cart) {
+                    $infoCarts[] = $cart;
+                }
             }
         }
+
         $view = new ViewOrder();
-        $view->show($infoCommands);
+        $view->show($infoCarts);
     }
 }

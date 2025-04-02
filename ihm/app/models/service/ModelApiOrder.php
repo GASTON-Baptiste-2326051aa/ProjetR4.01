@@ -16,12 +16,29 @@ class ModelApiOrder extends ModelApi
      */
     public function getCommand(string $id) : array
     {
-        $url= '/command' . '/' . $id;
+        $url='/'. $id;
         return $this->request($url);
     }
-    public function validateCommand()
+
+    /**
+     * @throws Exception
+     */
+    public function validateOrder($id, $cartId, $userId, $date, $relayAddress, $valid): string
     {
-        //TODO : valider une commande
+        $orderData = [
+            'id' => $id,
+            'cartId' => $cartId,
+            'userId' => $userId,
+            'date' => $date,
+            'relayAddress' => $relayAddress,
+            'valid' => $valid
+        ];
+        $response = $this->request('', $orderData, 'POST');
+        if ($response === 'created') {
+            return $response;
+        } else {
+            throw new Exception("Failed to create order: " . json_encode($response));
+        }
     }
 
     /**

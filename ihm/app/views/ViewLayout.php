@@ -12,12 +12,10 @@ class ViewLayout
 
     /**
      * Constructeur de la classe
-     * @param $title
-     * @param $content
-     * @version 1.0
-     * @author Baptiste GASTON
+     * @param string $title
+     * @param string $content
      */
-    public function __construct($title, $content)
+    public function __construct(string $title, string $content)
     {
         $this->title = $title;
         $this->content = $content;
@@ -26,32 +24,38 @@ class ViewLayout
     /**
      * Affiche le layout
      * @return void
-     * @version 1.0
-     * @author Baptiste GASTON
      */
-    public function show() : void
+    public function show(): void
     {
         ?>
         <!doctype html>
         <html lang="fr">
         <head>
             <meta charset="utf-8"/>
-            <title><?= $this->title; ?> - Coopérative </title> <!-- Prend la valeur de $title -->
+            <title><?= htmlspecialchars($this->title); ?> - Coopérative</title>
             <link href="/_assets/styles/style.css" rel="stylesheet"/>
         </head>
         <body>
+
         <header>
+            <nav>
+                <ul>
+                    <li><a href="/index.php">Accueil</a></li>
+                    <li><a href="/index.php?action=order">Ma Commande</a></li>
+                </ul>
+            </nav>
         </header>
+
         <main>
-            <?=$this->content ?>
+                <?= $this->content ?>
         </main>
-        </body>
+
         <footer>
             <p>© 2024 - Collaborative</p>
         </footer>
+
+        </body>
         </html>
         <?php
     }
 }
-
-?>

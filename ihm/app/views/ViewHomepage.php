@@ -26,7 +26,7 @@ class ViewHomepage
                         </h3>
                         <p><strong>Prix :</strong> <?= $panier['price'] ?>€</p>
                         <p><strong>Quantité disponible :</strong> <?= $panier['available_quantity'] ?></p>
-                        <form method="POST" action="/index.php?action=command">
+                        <form method="POST" action="/index.php?action=order">
                             <input type="hidden" name="id" value="<?= $panier['id'] ?>">
                             <button type="submit">Ajouter à la commande</button>
                         </form>
@@ -34,7 +34,7 @@ class ViewHomepage
                 <?php } ?>
             </div>
 
-            <a href="/index.php?action=command" class="view-cart">Voir ma commande</a>
+            <a href="/index.php?action=order" class="view-cart">Voir ma commande</a>
         </section>
 
         <?php

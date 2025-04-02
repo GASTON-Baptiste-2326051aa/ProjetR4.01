@@ -1,4 +1,4 @@
-package fr.coop.order;
+package fr.coop.order.domain;
 
 /**
  * Classe représentant une commande
@@ -33,7 +33,7 @@ public class Order {
     /**
      * Si la commande a été validée
      */
-    protected boolean valid;
+    public boolean valid;
 
     /**
      * Constructeur par défaut

@@ -1,5 +1,8 @@
 package fr.coop.order;
 
+import fr.coop.order.data.OrderRepositoryInterface;
+import fr.coop.order.domain.Order;
+import fr.coop.order.service.OrderService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;

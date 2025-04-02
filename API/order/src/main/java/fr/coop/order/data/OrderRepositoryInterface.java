@@ -1,4 +1,6 @@
-package fr.coop.order;
+package fr.coop.order.data;
+
+import fr.coop.order.domain.Order;
 
 import java.util.*;
 
@@ -17,7 +19,7 @@ public interface OrderRepositoryInterface {
      * @param id identifiant de la commande recherchée
      * @return un objet Order représentant la commande recherchée
      */
-    public Order getOrder( String id );
+    public Order getOrder(String id );
 
     /**
      * Méthode retournant la liste des commandes

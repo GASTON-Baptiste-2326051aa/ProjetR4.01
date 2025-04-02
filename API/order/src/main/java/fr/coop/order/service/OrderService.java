@@ -1,5 +1,7 @@
-package fr.coop.order;
+package fr.coop.order.service;
 
+import fr.coop.order.data.OrderRepositoryInterface;
+import fr.coop.order.domain.Order;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import java.util.ArrayList;
@@ -73,6 +75,6 @@ public class OrderService {
      * @return true si la commande a pu être mise à jours
      */
     public boolean updateOrder(String id, Order order) {
-        return orderRepo.updateOrder(id, order.userId, order.date, order.relayAddress, String.valueOf(order.valid));
+        return orderRepo.updateOrder(id, order.getUserId(), order.getDate(), order.getRelayAddress(), String.valueOf(order.valid));
     }
 }

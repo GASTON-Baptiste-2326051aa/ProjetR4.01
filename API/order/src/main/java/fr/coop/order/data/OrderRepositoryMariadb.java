@@ -1,9 +1,10 @@
-package fr.coop.order;
+package fr.coop.order.data;
+
+import fr.coop.order.domain.Order;
 
 import java.io.Closeable;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Classe permettant d'accèder aux commandes stockées dans une base de données Mariadb

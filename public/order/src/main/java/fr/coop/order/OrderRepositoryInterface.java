@@ -1,4 +1,4 @@
-package com.coop.order;
+package fr.coop.order;
 
 import java.util.*;
 

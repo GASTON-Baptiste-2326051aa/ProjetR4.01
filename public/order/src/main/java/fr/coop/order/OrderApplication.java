@@ -1,4 +1,4 @@
-package com.coop.order;
+package fr.coop.order;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Disposes;

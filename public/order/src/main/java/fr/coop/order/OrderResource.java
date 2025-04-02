@@ -1,4 +1,4 @@
-package com.coop.order;
+package fr.coop.order;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -77,7 +77,7 @@ public class OrderResource {
     @PUT
     @Path("{id}")
     @Consumes("application/json")
-    public Response updateBook(@PathParam("id") String id, Order order ){
+    public Response updateOrder(@PathParam("id") String id, Order order ){
 
         // si la commande n'a pas été trouvée
         if( ! service.updateOrder(id, order) )

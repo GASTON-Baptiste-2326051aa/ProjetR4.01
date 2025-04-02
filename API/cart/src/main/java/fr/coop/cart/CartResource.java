@@ -70,6 +70,23 @@ public class CartResource {
     }
 
     /**
+     * Endpoint permettant de créer un panier
+     * @param cart le panier transmis en HTTP au format JSON et converti en objet Cart
+     * @return une réponse indiquant si le panier a été créé
+     */
+    @POST
+    @Consumes("application/json")
+    public Response addCart(Cart cart) {
+        boolean success = service.addCart(cart);
+
+        if (success) {
+            return Response.ok("Product added").build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+
+    /**
      * Endpoint permettant de mettre à jour les informations d'un panier
      * @param id identifiant du panier à mettre à jour
      * @param cart le panier transmis en HTTP au format JSON et converti en objet Cart

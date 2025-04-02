@@ -68,6 +68,13 @@ public class CartService {
     }
 
     /**
+     * Méthode permettant de créer panier
+     * @param cart pannier à enregistrer
+     * @return true si l'ajout a réussi, false sinon
+     */
+    public boolean addCart(Cart cart) { return cartRepo.addCart(cart.id, cart.name, cart.description, cart.price, cart.available_quantity); }
+
+    /**
      * Méthode permettant de mettre à jour un panier
      * @param id identifiant du panier à mettre à jour
      * @param cart nouvel objet contenant les informations mises à jour

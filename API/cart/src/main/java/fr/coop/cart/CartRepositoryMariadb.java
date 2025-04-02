@@ -48,7 +48,7 @@ public class CartRepositoryMariadb implements CartRepositoryInterface, Closeable
 
         Cart selectedCart = null;
 
-        String query = "SELECT * FROM CART JOIN CART_CONTENT ON CART.ID = CART_CONTENT.CART_ID WHERE CART.ID=?";
+        String query = "SELECT * FROM CART LEFT JOIN CART_CONTENT ON CART.ID = CART_CONTENT.CART_ID WHERE CART.ID=?";
 
         try (PreparedStatement ps = dbConnection.prepareStatement(query)) {
             ps.setInt(1, Integer.parseInt(id));
@@ -89,7 +89,7 @@ public class CartRepositoryMariadb implements CartRepositoryInterface, Closeable
     public ArrayList<Cart> getAllCarts() {
         ArrayList<Cart> listCarts = new ArrayList<>();
 
-        String query = "SELECT * FROM CART JOIN CART_CONTENT ON CART.ID = CART_CONTENT.CART_ID ORDER BY CART.ID";
+        String query = "SELECT * FROM CART LEFT JOIN CART_CONTENT ON CART.ID = CART_CONTENT.CART_ID ORDER BY CART.ID";
 
         try (PreparedStatement ps = dbConnection.prepareStatement(query)) {
 

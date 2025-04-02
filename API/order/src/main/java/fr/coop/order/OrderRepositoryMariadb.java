@@ -18,7 +18,6 @@ public class OrderRepositoryMariadb implements OrderRepositoryInterface, Closeab
     /**
      * Constructeur de la classe
      * @param infoConnection chaîne de caractères avec les informations de connexion
-     *                       (p.ex. jdbc:mariadb://mysql-[compte].alwaysdata.net/[compte]_library_db
      * @param user chaîne de caractères contenant l'identifiant de connexion à la base de données
      * @param pwd chaîne de caractères contenant le mot de passe à utiliser
      */
@@ -42,11 +41,11 @@ public class OrderRepositoryMariadb implements OrderRepositoryInterface, Closeab
 
         Order selectedOrder = null;
 
-        String query = "SELECT * FROM Order WHERE id=? LEFT JOIN Order_content ON Order.id = Order_content.Order_id";
+        String query = "SELECT * FROM `ORDER` LEFT JOIN ORDER_CONTENT ON `ORDER`.ID = ORDER_CONTENT.ORDER_ID WHERE `ORDER`.ID=?";
 
         // construction et exécution d'une requête préparée
         try ( PreparedStatement ps = dbConnection.prepareStatement(query) ){
-            ps.setString(1, id);
+            ps.setInt(1, Integer.parseInt(id));
 
             // exécution de la requête
             ResultSet result = ps.executeQuery();
@@ -89,7 +88,7 @@ public class OrderRepositoryMariadb implements OrderRepositoryInterface, Closeab
     public ArrayList<Order> getAllOrders() {
         ArrayList<Order> listOrders = new ArrayList<>();
 
-        String query = "SELECT * FROM Order WHERE id=? LEFT JOIN Order_content ON Order.id = Order_content.Order_id ORDER BY id";
+        String query = "SELECT * FROM `ORDER` WHERE ID=? JOIN ORDER_CONTENT ON `ORDER`.ID = ORDER_CONTENT.ORDER_ID ORDER BY ID";
 
         // construction et exécution d'une requête préparée
         try ( PreparedStatement ps = dbConnection.prepareStatement(query) ){
@@ -146,7 +145,7 @@ public class OrderRepositoryMariadb implements OrderRepositoryInterface, Closeab
 
     @Override
     public boolean updateOrder( String id, String userId, String date, String relayAddress, boolean valid) {
-        String query = "UPDATE Order SET user_id=?, limit_date=?, relay_address=?, is_validate=? where id=?";
+        String query = "UPDATE `ORDER` SET USER_ID=?, LIMIT_DATE=?, RELAY_ADDRESS=?, IS_VALIDATE=? WHERE ID=?";
         int nbRowModified = 0;
 
         // construction et exécution d'une requête préparée

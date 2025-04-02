@@ -55,7 +55,7 @@ public class OrderResource {
      * @return les informations de la commande recherchée au format JSON
      */
     @GET
-    @Path("/{id}")
+    @Path("{id}")
     @Produces("application/json")
     public String getOrder( @PathParam("id") String id){
 
@@ -77,7 +77,7 @@ public class OrderResource {
     @PUT
     @Path("{id}")
     @Consumes("application/json")
-    public Response updateBook(@PathParam("id") String id, Order order ){
+    public Response updateOrder(@PathParam("id") String id, Order order ){
 
         // si la commande n'a pas été trouvée
         if( ! service.updateOrder(id, order) )

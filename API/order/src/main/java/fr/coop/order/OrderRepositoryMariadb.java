@@ -41,7 +41,7 @@ public class OrderRepositoryMariadb implements OrderRepositoryInterface, Closeab
 
         Order selectedOrder = null;
 
-        String query = "SELECT * FROM `ORDER` LEFT JOIN ORDER_CONTENT ON `ORDER`.ID = ORDER_CONTENT.ORDER_ID WHERE `ORDER`.ID=?";
+        String query = "SELECT * FROM `ORDER` JOIN ORDER_CONTENT ON `ORDER`.ID = ORDER_CONTENT.ORDER_ID WHERE `ORDER`.ID=?";
 
         // construction et exécution d'une requête préparée
         try ( PreparedStatement ps = dbConnection.prepareStatement(query) ){
@@ -49,34 +49,26 @@ public class OrderRepositoryMariadb implements OrderRepositoryInterface, Closeab
 
             // exécution de la requête
             ResultSet result = ps.executeQuery();
-            if (result.getFetchSize() == 0) {
+
+            if (!result.isBeforeFirst()) { // Vérifie si le ResultSet contient des lignes
                 return selectedOrder;
             }
 
-            String[] cartId = new String[result.getFetchSize()];
-            String tmp = "";
-            int index = 0;
+            ArrayList<String> cartIds = new ArrayList<>();
 
-            // récupération des tuples résultats
-            // (si l'identifiant de la commande est valide)
-            while ( result.next() )
-            {
-                tmp = result.getString("cart_id");
-                if (tmp != null) {
-                    cartId[index] = tmp;
-                    ++index;
+            while (result.next()) {
+                if (selectedOrder == null) {
+                    selectedOrder = new Order(result.getString("id"), result.getString("user_id"),
+                            result.getString("limit_date"), result.getString("relay_address"),
+                            result.getBoolean("is_validate"));
                 }
+                cartIds.add(result.getString("cart_id"));
             }
 
-            result.previous();
-
-            String userId = result.getString("user_id");
-            String relayAddress = result.getString("relay_address");
-            String date = result.getString("limit_date");
-            boolean valid = result.getBoolean("is_validate");
-
-            selectedOrder = new Order(id, userId, date, relayAddress, valid);
-            selectedOrder.setCartId(cartId);
+            if (selectedOrder != null) { // Ajouter la dernière commande
+                selectedOrder.setCartId(cartIds.toArray(new String[0]));
+                cartIds.clear();
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -88,60 +80,49 @@ public class OrderRepositoryMariadb implements OrderRepositoryInterface, Closeab
     public ArrayList<Order> getAllOrders() {
         ArrayList<Order> listOrders = new ArrayList<>();
 
-        String query = "SELECT * FROM `ORDER` WHERE ID=? JOIN ORDER_CONTENT ON `ORDER`.ID = ORDER_CONTENT.ORDER_ID ORDER BY ID";
+        String query = "SELECT * FROM `ORDER` JOIN ORDER_CONTENT ON `ORDER`.ID = ORDER_CONTENT.ORDER_ID ORDER BY `ORDER`.ID";
 
-        // construction et exécution d'une requête préparée
-        try ( PreparedStatement ps = dbConnection.prepareStatement(query) ){
+        try (PreparedStatement ps = dbConnection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
 
-            // exécution de la requête
             ResultSet result = ps.executeQuery();
-            if (result.getFetchSize() == 0) {
+
+            if (!result.isBeforeFirst()) { // Vérifie si le ResultSet contient des lignes
                 return listOrders;
             }
 
-            String[] cartId = new String[result.getFetchSize()];
-            String tmp = "";
             String currentOrderId = "";
-            int index = 0;
+            Order currentOrder = null;
+            ArrayList<String> cartIds = new ArrayList<>();
 
-            // récupération des tuples résultats
-            // (si l'identifiant de la commande est valide)
-            while ( result.next() )
-            {
-                tmp = result.getString("cart_id");
-                if (tmp != null) {
-                    if (!tmp.equals(currentOrderId)) {
-                        result.previous();
-                        String id = result.getString("id");
-                        String userId = result.getString("user_id");
-                        String relayAddress = result.getString("relay_address");
-                        String date = result.getString("limit_date");
-                        boolean valid = result.getBoolean("is_validate");
-                        Order currentOrder = new Order(id, userId, relayAddress, date, valid);
-                        currentOrder.setCartId(Arrays.copyOfRange(cartId, 0, index));
-                        listOrders.add(currentOrder);
-                        index = 0;
-                        result.next();
+            while (result.next()) {
+                String orderId = result.getString("id");
+
+                if (!orderId.equals(currentOrderId)) {
+                    if (currentOrder != null) {
+                        currentOrder.setCartId(cartIds.toArray(new String[0]));
+                        cartIds.clear();
                     }
-                    cartId[index] = tmp;
-                    ++index;
+                    currentOrderId = orderId;
+                    currentOrder = new Order(currentOrderId, result.getString("user_id"),
+                            result.getString("limit_date"), result.getString("relay_address"),
+                            result.getBoolean("is_validate"));
+                    listOrders.add(currentOrder);
                 }
+                cartIds.add(result.getString("cart_id"));
             }
 
-            result.previous();
-            String id = result.getString("id");
-            String userId = result.getString("user_id");
-            String relayAddress = result.getString("relay_address");
-            String date = result.getString("limit_date");
-            boolean valid = result.getBoolean("is_validate");
-            Order currentOrder = new Order(id, userId, relayAddress, date, valid);
-            currentOrder.setCartId(Arrays.copyOfRange(cartId, 0, index));
-            listOrders.add(currentOrder);
+            if (!cartIds.isEmpty() && currentOrder != null) { // Ajouter la dernière commande
+                currentOrder.setCartId(cartIds.toArray(new String[0]));
+                cartIds.clear();
+            }
+
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
         return listOrders;
     }
+
 
     @Override
     public boolean updateOrder( String id, String userId, String date, String relayAddress, boolean valid) {

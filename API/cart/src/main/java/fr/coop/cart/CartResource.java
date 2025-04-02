@@ -29,9 +29,9 @@ public class CartResource {
      * Constructeur permettant d'initialiser le service avec une interface d'accès aux données
      * @param cartRepo objet implémentant l'interface d'accès aux données
      */
-    @Inject
-    public CartResource(CartRepositoryInterface cartRepo, UserRepositoryInterface userRepo, ProductRepositoryInterface productRepo) {
-        this.service = new CartService(cartRepo, userRepo, productRepo);
+
+    public @Inject CartResource(CartRepositoryInterface cartRepo) {
+        this.service = new CartService(cartRepo);
     }
 
     /**
@@ -47,7 +47,7 @@ public class CartResource {
      */
     @GET
     @Produces("application/json")
-    public String getAllCarts() {
+    public String Carts() {
         return service.getAllCartsJSON();
     }
 
@@ -57,7 +57,7 @@ public class CartResource {
      * @return les informations du panier recherché au format JSON
      */
     @GET
-    @Path("/{id}")
+    @Path("{id}")
     @Produces("application/json")
     public String getCart(@PathParam("id") String id) {
         String result = service.getCartJSON(id);
@@ -77,12 +77,10 @@ public class CartResource {
     @POST
     @Consumes("application/json")
     public Response addCart(Cart cart) {
-        boolean success = service.addCart(cart);
-
-        if (success) {
-            return Response.ok("Product added").build();
+        if (!service.addCart(cart)) {
+            throw new BadRequestException();
         } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.ok("created").build();
         }
     }
 
@@ -112,10 +110,10 @@ public class CartResource {
     @Path("{id}")
     public Response deleteCart(@PathParam("id") String id){
 
-        if(service.deleteCart(id))
-            return Response.ok("removed").build();
+        if(!service.deleteCart(id))
+            throw new NotFoundException();
         else
-            return Response.status( Response.Status.NOT_FOUND ).build();
+            return Response.ok("deleted").build();
     }
 
     /**
@@ -125,15 +123,14 @@ public class CartResource {
      * @return une réponse indiquant si le produit a été ajouté
      */
     @POST
-    @Path("/{idCart}/products/{idProduct}")
-    public Response addProduct(@PathParam("idCart") String idCart, @PathParam("idProduct") String idProduct) {
-        boolean success = service.addProduct(idCart, idProduct);
+    @Path("{idCart}")
+    @Consumes("text/plain")
+    public Response addProduct(@PathParam("idCart") String idCart, String idProduct) {
 
-        if (success) {
-            return Response.ok("Product added").build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
+        if (!service.addProduct(idCart, idProduct))
+            throw new NotFoundException();
+        else
+            return Response.ok("added").build();
     }
 
     /**
@@ -143,14 +140,12 @@ public class CartResource {
      * @return une réponse indiquant si le produit a été retiré
      */
     @DELETE
-    @Path("/{idCart}/products/{idProduct}")
+    @Path("/{idCart}/{idProduct}")
     public Response removeProduct(@PathParam("idCart") String idCart, @PathParam("idProduct") String idProduct) {
-        boolean success = service.removeProduct(idCart, idProduct);
 
-        if (success) {
-            return Response.ok("Product removed").build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
+        if (!service.removeProduct(idCart, idProduct))
+            throw new NotFoundException();
+        else
+            return Response.ok("removed").build();
     }
 }

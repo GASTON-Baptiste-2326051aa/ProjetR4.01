@@ -25,6 +25,9 @@ public class Cart {
      */
     protected int available_quantity;
 
+    /**
+     * Identifiants des produits
+     */
     protected String[] productId;
 
     /**

@@ -132,11 +132,21 @@ public class CartRepositoryMariadb implements CartRepositoryInterface, Closeable
         return listCarts;
     }
 
+    /**
+     * Ajoute un panier
+     * @param id Identifiant du panier.
+     * @param name Nom du panier.
+     * @param description Description du panier.
+     * @param price Prix du panier.
+     * @param available_quantity Quantité disponible.
+     * @return true si la requête a été effectuée, false sinon
+     */
     @Override
     public boolean addCart(String id, String name, String description, double price, int available_quantity) {
         String query = "INSERT INTO CART (ID, NAME, DESCRIPTION, PRICE, AVAILABLE_QUANTITY) VALUES (?,?,?,?,?)";
         int nbRowModified = 0;
 
+        // construction et exécution d'une requête préparée
         try ( PreparedStatement ps = dbConnection.prepareStatement(query) ){
             ps.setInt(1, Integer.parseInt(id));
             ps.setString(2, name);
@@ -174,12 +184,28 @@ public class CartRepositoryMariadb implements CartRepositoryInterface, Closeable
 
     @Override
     public boolean deleteCart(String id) {
-        String query = "DELETE FROM CART WHERE ID=?";
-        int nbRowModified = 0;
 
+        // suppression des relations stockant les paniers présents dans la commande
+        String query = "DELETE FROM CART_CONTENT WHERE CART_ID=?";
+        // construction et exécution d'une requête préparée
         try ( PreparedStatement ps = dbConnection.prepareStatement(query) ){
             ps.setInt(1, Integer.parseInt(id));
 
+            // exécution de la requête
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        // suppression de la commande
+        query = "DELETE FROM `CART` WHERE ID=?";
+        int nbRowModified = 0;
+
+        // construction et exécution d'une requête préparée
+        try ( PreparedStatement ps = dbConnection.prepareStatement(query) ){
+            ps.setInt(1, Integer.parseInt(id));
+
+            // exécution de la requête
             nbRowModified = ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

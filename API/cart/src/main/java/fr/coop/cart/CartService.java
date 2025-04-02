@@ -2,7 +2,6 @@ package fr.coop.cart;
 
 import fr.coop.cart.other_api.Product;
 import fr.coop.cart.other_api.ProductRepositoryInterface;
-import fr.coop.cart.other_api.User;
 import fr.coop.cart.other_api.UserRepositoryInterface;
 import java.util.ArrayList;
 import jakarta.json.bind.Jsonb;
@@ -14,20 +13,16 @@ import jakarta.json.bind.JsonbBuilder;
  */
 public class CartService {
 
-    protected final UserRepositoryInterface userRepo;
-    protected final ProductRepositoryInterface productRepo;
     protected final CartRepositoryInterface cartRepo;
 
     /**
      * Constructeur permettant d'injecter l'accès aux données
      * @param cartRepo objet implémentant l'interface d'accès aux données
-     * @param userRepo objet implémentant l'interface d'accès aux données
-     * @param productRepo objet implémentant l'interface d'accès aux données
+     *
      */
-    public CartService(CartRepositoryInterface cartRepo, UserRepositoryInterface userRepo, ProductRepositoryInterface productRepo) {
+    public CartService(CartRepositoryInterface cartRepo) {
         this.cartRepo = cartRepo;
-        this.userRepo = userRepo;
-        this.productRepo = productRepo;
+
     }
 
     /**
@@ -40,7 +35,8 @@ public class CartService {
 
         try (Jsonb jsonb = JsonbBuilder.create()) {
             result = jsonb.toJson(allCarts);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             System.err.println(e.getMessage());
         }
 
@@ -72,7 +68,9 @@ public class CartService {
      * @param cart pannier à enregistrer
      * @return true si l'ajout a réussi, false sinon
      */
-    public boolean addCart(Cart cart) { return cartRepo.addCart(cart.id, cart.name, cart.description, cart.price, cart.available_quantity); }
+    public boolean addCart(Cart cart) {
+        return cartRepo.addCart(cart.getId(), cart.getName(), cart.getDescription(), cart.getPrice(), cart.getAvailable_quantity());
+         }
 
     /**
      * Méthode permettant de mettre à jour un panier
@@ -81,37 +79,7 @@ public class CartService {
      * @return true si la mise à jour a réussi, false sinon
      */
     public boolean updateCart(String id, Cart cart) {
-        return cartRepo.updateCart(id, cart.name, cart.description, cart.price, cart.available_quantity);
-    }
-
-    /**
-     * Méthode permettant d'ajouter un produit au panier
-     * @param idCart identifiant du panier
-     * @param idProduct identifiant du produit
-     * @return true si l'ajout a réussi, false sinon
-     */
-    public boolean addProduct(String idCart, String idProduct) {
-        Product myProduct = productRepo.getProduct(idProduct);
-        if (myProduct == null) {
-            throw new IllegalArgumentException("Product not found");
-        }
-
-        return cartRepo.addProduct(idCart, idProduct);
-    }
-
-    /**
-     * Méthode permettant de retirer un produit du panier
-     * @param idCart identifiant du panier
-     * @param idProduct identifiant du produit à retirer
-     * @return true si le produit a été retiré, false sinon
-     */
-    public boolean removeProduct(String idCart, String idProduct) {
-        Product myProduct = productRepo.getProduct(idProduct);
-        if (myProduct == null) {
-            throw new IllegalArgumentException("Product not found");
-        }
-
-        return cartRepo.removeProduct(idCart, idProduct);
+        return cartRepo.updateCart(id, cart.getName(), cart.getDescription(), cart.getPrice(), cart.getAvailable_quantity());
     }
 
     /**
@@ -122,4 +90,27 @@ public class CartService {
     public boolean deleteCart(String id) {
         return cartRepo.deleteCart(id);
     }
+
+
+    /**
+     * Méthode permettant d'ajouter un produit au panier
+     * @param idCart identifiant du panier
+     * @param idProduct identifiant du produit
+     * @return true si l'ajout a réussi, false sinon
+     */
+    public boolean addProduct(String idCart, String idProduct) {
+        return cartRepo.addProduct(idCart, idProduct);
+    }
+
+    /**
+     * Méthode permettant de retirer un produit du panier
+     * @param idCart identifiant du panier
+     * @param idProduct identifiant du produit à retirer
+     * @return true si le produit a été retiré, false sinon
+     */
+    public boolean removeProduct(String idCart, String idProduct) {
+        return cartRepo.removeProduct(idCart, idProduct);
+    }
+
+
 }

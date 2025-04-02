@@ -2,7 +2,6 @@ package fr.coop.cart;
 
 import fr.coop.cart.other_api.ProductRepositoryInterface;
 import fr.coop.cart.other_api.UserRepositoryInterface;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -31,8 +30,8 @@ public class CartResource {
      * @param cartRepo objet implémentant l'interface d'accès aux données
      */
 
-    public @Inject CartResource(CartRepositoryInterface cartRepo, UserRepositoryInterface userRepo, ProductRepositoryInterface productRepo) {
-        this.service = new CartService(cartRepo, userRepo, productRepo);
+    public @Inject CartResource(CartRepositoryInterface cartRepo) {
+        this.service = new CartService(cartRepo);
     }
 
     /**
@@ -48,7 +47,7 @@ public class CartResource {
      */
     @GET
     @Produces("application/json")
-    public String getAllCarts() {
+    public String Carts() {
         return service.getAllCartsJSON();
     }
 
@@ -58,7 +57,7 @@ public class CartResource {
      * @return les informations du panier recherché au format JSON
      */
     @GET
-    @Path("/{id}")
+    @Path("{id}")
     @Produces("application/json")
     public String getCart(@PathParam("id") String id) {
         String result = service.getCartJSON(id);
@@ -68,6 +67,21 @@ public class CartResource {
             throw new NotFoundException();
 
         return result;
+    }
+
+    /**
+     * Endpoint permettant de créer un panier
+     * @param cart le panier transmis en HTTP au format JSON et converti en objet Cart
+     * @return une réponse indiquant si le panier a été créé
+     */
+    @POST
+    @Consumes("application/json")
+    public Response addCart(Cart cart) {
+        if (!service.addCart(cart)) {
+            throw new BadRequestException();
+        } else {
+            return Response.ok("created").build();
+        }
     }
 
     /**
@@ -81,7 +95,7 @@ public class CartResource {
     @Consumes("application/json")
     public Response updateCart(@PathParam("id") String id, Cart cart) {
         // Si le panier n'a pas été trouvé
-        if (!service.updateCart(Integer.parseInt(id), cart))
+        if (!service.updateCart(id, cart))
             throw new NotFoundException();
         else
             return Response.ok("updated").build();
@@ -94,11 +108,44 @@ public class CartResource {
      */
     @DELETE
     @Path("{id}")
-    public Response removeCart(@PathParam("id") String id){
+    public Response deleteCart(@PathParam("id") String id){
 
-        if( service.removeCart(id) )
-            return Response.ok("removed").build();
+        if(!service.deleteCart(id))
+            throw new NotFoundException();
         else
-            return Response.status( Response.Status.NOT_FOUND ).build();
+            return Response.ok("deleted").build();
+    }
+
+    /**
+     * Endpoint permettant d'ajouter un produit au panier
+     * @param idCart identifiant du panier
+     * @param idProduct identifiant du produit à ajouter
+     * @return une réponse indiquant si le produit a été ajouté
+     */
+    @POST
+    @Path("{idCart}")
+    @Consumes("text/plain")
+    public Response addProduct(@PathParam("idCart") String idCart, String idProduct) {
+
+        if (!service.addProduct(idCart, idProduct))
+            throw new NotFoundException();
+        else
+            return Response.ok("added").build();
+    }
+
+    /**
+     * Endpoint permettant de retirer un produit du panier
+     * @param idCart identifiant du panier
+     * @param idProduct identifiant du produit à retirer
+     * @return une réponse indiquant si le produit a été retiré
+     */
+    @DELETE
+    @Path("/{idCart}/{idProduct}")
+    public Response removeProduct(@PathParam("idCart") String idCart, @PathParam("idProduct") String idProduct) {
+
+        if (!service.removeProduct(idCart, idProduct))
+            throw new NotFoundException();
+        else
+            return Response.ok("removed").build();
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace models\service;
+
 use Exception;
 
 class ModelApiCommands extends ModelApi
@@ -30,9 +31,5 @@ class ModelApiCommands extends ModelApi
     {
         $url = '/command';
         return $this->request($url);
-
     }
-
-
-
 }

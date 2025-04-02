@@ -2,6 +2,7 @@
 
 
 namespace models\service;
+
 use Exception;
 
 class ModelApiCart extends ModelApi
@@ -33,6 +34,4 @@ class ModelApiCart extends ModelApi
     {
         //TODO : récupérer les produits d'un panier
     }
-
-
 }

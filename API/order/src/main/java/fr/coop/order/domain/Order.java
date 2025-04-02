@@ -1,4 +1,4 @@
-package fr.coop.order;
+package fr.coop.order.domain;
 
 /**
  * Classe représentant une commande

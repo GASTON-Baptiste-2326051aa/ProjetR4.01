@@ -7,6 +7,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
+import jakarta.json.bind.JsonbException;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 
@@ -91,6 +92,7 @@ public class UserAndProductRessource {
     @Consumes("application/json")
     public Response updateUser(String userJson) {
         try {
+            System.out.println("userJson: " + userJson);
             Jsonb jsonb = JsonbBuilder.create();
             User user = jsonb.fromJson(userJson, User.class);
             userAndProductService.updateUser(user.id(), user.firstName(), user.name(), user.password());
@@ -123,7 +125,7 @@ public class UserAndProductRessource {
      * @param json Le JSON contenant l'ID et le mot de passe de l'utilisateur.
      * @return La réponse HTTP indiquant si l'utilisateur existe ou non.
      */
-    @GET
+    @POST
     @Path("/user/exists")
     @Consumes("application/json")
     @Produces("application/json")
@@ -137,28 +139,34 @@ public class UserAndProductRessource {
             } else {
                 return Response.status(Response.Status.NOT_FOUND).entity("{\"exists\": false}").build();
             }
-        } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid JSON").build();
+        } catch (JsonbException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid JSON: " + e.getMessage()).build();
         }
     }
 
     public static class UserCredentials {
-        private final String id;
-        private final String password;
+        private String id;
+        private String password;
 
-        public UserCredentials(String id, String password) {
-            this.id = id;
-            this.password = password;
-        }
+        public UserCredentials() {}
 
         public String getId() {
             return id;
         }
 
+        public void setId(String id) {
+            this.id = id;
+        }
+
         public String getPassword() {
             return password;
         }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
     }
+
 
     /**
      * Récupère tous les produits.

@@ -2,8 +2,6 @@
 
 namespace views;
 
-use views\ViewLayout;
-
 class ViewLogin
 {
 
@@ -12,18 +10,18 @@ class ViewLogin
         ob_start();
         ?>
         <section>
-            <?php if ($error): ?>
+            <?php if ($error) : ?>
                 <div class="error">
                     <p> <?php echo $error?></p>
                 </div>
             <?php endif; ?>
             <h1>Connexion</h1>
-            <form action="/public/index.php?action=login" method="post">
-                   <label for="id">ID:</label>
-                   <input type="text" id="id" name="id" required>
+            <form action="/index?action=login" method="POST">
+                   <label for="id_client">ID:</label>
+                   <input type="text" id="id_client" name="id_client" required>
 
-                   <label for="mdp">Mot de passe:</label>
-                   <input type="password" id="mdp" name="mdp" required
+                   <label for="password">Mot de passe:</label>
+                   <input type="password" id="password" name="password" required>
                    <input type="submit" value="Connexion">
             </form>
             <?php

@@ -6,7 +6,6 @@ use Exception;
 use models\service\ModelApiCart;
 use views\ViewHomepage;
 
-
 class ControllerHomepage implements Controller
 {
     private modelApiCart $modelApiCart;
@@ -20,8 +19,8 @@ class ControllerHomepage implements Controller
      */
     public function execute() : void
     {
-        $paniers = $this->modelApiCart->getAllCarts();
+
         $view = new ViewHomepage();
-        $view->show($paniers);
+        $view->show();
     }
 }

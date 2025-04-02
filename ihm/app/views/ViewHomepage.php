@@ -2,14 +2,13 @@
 
 namespace views;
 
-
 class ViewHomepage
 {
-    public function  __construct()
+    public function __construct()
     {
     }
 
-    public function show($paniers) : void
+    public function show($paniers = []) : void
     {
         ob_start();
         ?>
@@ -25,7 +24,7 @@ class ViewHomepage
                 <?php
             }
             ?>
-            <a href="/public/index.php?action=cart">Voir mon panier</a>
+            <a href="/index.php?action=cart">Voir mon panier</a>
         </section>
         <?php
         $layout = new ViewLayout('Homepage', ob_get_clean());

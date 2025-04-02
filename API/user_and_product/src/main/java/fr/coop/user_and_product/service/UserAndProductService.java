@@ -10,7 +10,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
-import jakarta.ws.rs.ApplicationPath;
 
 import java.util.List;
 
@@ -32,11 +31,6 @@ public class UserAndProductService {
         this.userRepository = new UserRepository();
         this.productRepository = new ProductRepository();
     }
-
-    /*public UserAndProductService(String infoConnection, String user, String password) {
-        this.userRepository = new UserRepository(infoConnection, user, password);
-        this.productRepository = new ProductRepository(infoConnection, user, password);
-    }*/
 
     /**
      * Crée un nouvel utilisateur.

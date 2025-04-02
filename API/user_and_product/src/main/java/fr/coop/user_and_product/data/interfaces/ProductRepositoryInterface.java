@@ -5,7 +5,7 @@ import fr.coop.user_and_product.domain.Product;
 import java.util.List;
 
 /**
- * Interface pour le dépôt de produits
+ * Interface pour le dépôt de produits.
  */
 public interface ProductRepositoryInterface {
 
@@ -42,6 +42,7 @@ public interface ProductRepositoryInterface {
 
     /**
      * Récupère un produit avec l'ID donné.
+     *
      * @param productId L'ID du produit à récupérer.
      * @return Le produit avec l'ID donné, ou null s'il n'est pas trouvé.
      */
@@ -49,6 +50,7 @@ public interface ProductRepositoryInterface {
 
     /**
      * Récupère tous les produits.
+     *
      * @return Une liste de tous les produits.
      */
     List<Product> getAllProducts();

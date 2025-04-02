@@ -12,17 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Classe pour le dépôt de produits
+ * Classe pour le dépôt de produits.
  */
 @ApplicationScoped
 public class ProductRepository extends Repository implements ProductRepositoryInterface {
     public ProductRepository() {
         super();
     }
-
-    /*public ProductRepository(String infoConnection, String user, String password) {
-        super(infoConnection, user, password);
-    }*/
 
     /**
      * Crée un nouveau produit avec les détails donnés.

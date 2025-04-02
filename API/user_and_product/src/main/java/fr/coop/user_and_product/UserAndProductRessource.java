@@ -144,29 +144,54 @@ public class UserAndProductRessource {
         }
     }
 
+    /**
+     * Classe interne pour représenter les informations d'identification de l'utilisateur.
+     */
     public static class UserCredentials {
         private String id;
         private String password;
 
+        /**
+         * Constructeur par défaut.
+         */
         public UserCredentials() {}
 
+        /**
+         * Récupère l'ID de l'utilisateur.
+         *
+         * @return L'ID de l'utilisateur.
+         */
         public String getId() {
             return id;
         }
 
+        /**
+         * Définit l'ID de l'utilisateur.
+         *
+         * @param id L'ID de l'utilisateur.
+         */
         public void setId(String id) {
             this.id = id;
         }
 
+        /**
+         * Récupère le mot de passe de l'utilisateur.
+         *
+         * @return Le mot de passe de l'utilisateur.
+         */
         public String getPassword() {
             return password;
         }
 
+        /**
+         * Définit le mot de passe de l'utilisateur.
+         *
+         * @param password Le mot de passe de l'utilisateur.
+         */
         public void setPassword(String password) {
             this.password = password;
         }
     }
-
 
     /**
      * Récupère tous les produits.

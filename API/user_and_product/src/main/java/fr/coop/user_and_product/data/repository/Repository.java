@@ -5,7 +5,7 @@ import fr.coop.user_and_product.data.MariaDBRepository;
 import java.sql.Connection;
 
 /**
- * Classe de base pour les dépôts
+ * Classe de base pour les dépôts.
  */
 public class Repository {
     protected MariaDBRepository mariaDBRepository;
@@ -19,12 +19,6 @@ public class Repository {
         this.connection = mariaDBRepository.getConnection();
         checkConnection();
     }
-
-    /*public Repository(String infoConnection, String user, String password) {
-        this.mariaDBRepository = new MariaDBRepository(infoConnection, user, password);
-        this.connection = mariaDBRepository.getConnection();
-        checkConnection();
-    }*/
 
     /**
      * Vérifie si la connexion à la base de données a été établie avec succès.

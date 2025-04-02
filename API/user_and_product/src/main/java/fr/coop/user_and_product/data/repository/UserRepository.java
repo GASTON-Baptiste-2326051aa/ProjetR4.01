@@ -12,17 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Classe pour le dépôt d'utilisateurs
+ * Classe pour le dépôt d'utilisateurs.
  */
 @ApplicationScoped
 public class UserRepository extends Repository implements UserRepositoryInterface {
     public UserRepository() {
         super();
     }
-
-    /*public UserRepository(String infoConnection, String user, String password) {
-        super(infoConnection, user, password);
-    }*/
 
     /**
      * Crée un nouvel utilisateur avec les détails donnés.

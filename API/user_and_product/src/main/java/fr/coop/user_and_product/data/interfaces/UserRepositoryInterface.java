@@ -5,7 +5,7 @@ import fr.coop.user_and_product.domain.User;
 import java.util.List;
 
 /**
- * Interface pour le dépôt d'utilisateurs
+ * Interface pour le dépôt d'utilisateurs.
  */
 public interface UserRepositoryInterface {
 

@@ -72,6 +72,23 @@ public class OrderResource {
     }
 
     /**
+     * Endpoint permettant d'enregistrer une commande
+     * @param order la commande transmise en HTTP au format JSON et convertie en objet Order
+     * @return une réponse "created" si l'enregistrement a été effectué, une erreur BadRequest sinon
+     */
+    @POST
+    @Consumes("application/json")
+    public Response addOrder(Order order) {
+
+
+        // si la commande n'a pas été créée
+        if (!service.addOrder(order))
+            throw new BadRequestException();
+        else
+            return Response.ok("created").build();
+    }
+
+    /**
      * Endpoint permettant de mettre à jours les informations d'une commande
      * @param id l'identifiant de la commande dont il faut changer le statut
      * @param order la commande transmise en HTTP au format JSON et convertie en objet Order
@@ -87,5 +104,57 @@ public class OrderResource {
             throw new NotFoundException();
         else
             return Response.ok("updated").build();
+    }
+
+    /**
+     * Endpoint permettant de supprimer une commande
+     * @param id l'identifiant de la commande qu'il faut supprimer
+     * @return une réponse "deleted" si la suppression a été effectuée, une erreur NotFound sinon
+     */
+    @DELETE
+    @Consumes("application/json")
+    public Response deleteOrder(String id) {
+
+        // si la commande n'a pas été trouvée
+        if (!service.deleteOrder(id))
+            throw new NotFoundException();
+        else
+            return Response.ok("deleted").build();
+    }
+
+    /**
+     * Endpoint permettant d'ajouter un panier à une commande
+     * @param id l'identifiant de la commande à mettre à jour
+     * @param cartid l'identifiant du panier à ajouter
+     * @return une réponse "added" si l'ajout a été effectué, une erreur NotFound sinon
+     */
+    @POST
+    @Path("{id}")
+    @Consumes("application/json")
+    public Response addCart(@PathParam("id") String id, String cartid ) {
+
+        // si la commande ou le panier n'a pas a été trouvé
+        if (!service.addCart(id, cartid))
+            throw new NotFoundException();
+        else
+            return Response.ok("added").build();
+    }
+
+    /**
+     * Méthode permettant de retirer un panier d'une commande
+     * @param id l'identifiant de la commande à mettre à jour
+     * @param cartid l'identifiant du panier à retirer
+     * @return une réponse "removed" si la mise à jour a été effectuée, une erreur NotFound sinon
+     */
+    @DELETE
+    @Path("{id}")
+    @Consumes("application/json")
+    public Response removeCart(@PathParam("id") String id, String cartid) {
+
+        // si la commande ou le panier n'a pas été trouvé
+        if (!service.removeCart(id, cartid))
+            throw new NotFoundException();
+        else
+            return Response.ok("removed").build();
     }
 }

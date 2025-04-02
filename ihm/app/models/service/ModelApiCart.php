@@ -1,10 +1,15 @@
 <?php
 
-
 namespace models\service;
 
 use Exception;
 
+/**
+ * Class ModelApiCart
+ * @package models\service
+ * @version 1.0
+ * @author Baptiste GASTON
+ */
 class ModelApiCart extends ModelApi
 {
     public function __construct($link)
@@ -13,6 +18,9 @@ class ModelApiCart extends ModelApi
     }
 
     /**
+     * Récupère un panier par son ID.
+     * @param string $id
+     * @return array
      * @throws Exception
      */
     public function getCart(string $id) : array
@@ -22,6 +30,8 @@ class ModelApiCart extends ModelApi
     }
 
     /**
+     * Récupère tous les paniers.
+     * @return array
      * @throws Exception
      */
     public function getAllCarts() : array
@@ -30,6 +40,9 @@ class ModelApiCart extends ModelApi
         return $this->request($url);
     }
 
+    /**
+     * Récupère les produits d'un panier.
+     */
     public function getCartProduct() : void
     {
         //TODO : récupérer les produits d'un panier

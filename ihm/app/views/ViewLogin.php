@@ -4,7 +4,12 @@ namespace views;
 
 class ViewLogin
 {
-
+    /**
+     * Affiche la vue de connexion.
+     *
+     * @param string|null $error Message d'erreur à afficher (optionnel).
+     * @return void
+     */
     public function show($error = null): void
     {
         ob_start();
@@ -29,5 +34,3 @@ class ViewLogin
             $layout->show();
     }
 }
-
-

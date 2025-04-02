@@ -3,6 +3,14 @@
 use controllers\ControllerHomepage;
 use controllers\ControllerLogin;
 
+/**
+ * Point d'entrée principal de l'application.
+ *
+ * @package Public
+ * @version 1.0
+ * @author Baptiste GASTON
+ */
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }

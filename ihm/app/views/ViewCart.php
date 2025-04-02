@@ -1,12 +1,22 @@
 <?php
 namespace views;
 
+/**
+ * Class ViewCart
+ * @package views
+ * @version 1.0
+ * @author Baptiste GASTON
+ */
 class ViewCart
 {
     public function __construct()
     {
     }
 
+    /**
+     * Affiche le contenu du panier.
+     * @param $panier
+     */
     public function show($panier) : void
     {
         ob_start();

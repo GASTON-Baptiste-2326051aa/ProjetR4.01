@@ -7,6 +7,12 @@ use models\service\ModelApiCart;
 use models\service\ModelApiOrder;
 use views\ViewOrder;
 
+/**
+ * Class ControllerOrder
+ * @package controllers
+ * @version 1.0
+ * @author Baptiste GASTON
+ */
 class ControllerOrder implements Controller
 {
     private ModelApiOrder $modelApiOrders;
@@ -19,6 +25,7 @@ class ControllerOrder implements Controller
     }
 
     /**
+     * Exécute les actions en fonction de la requête HTTP.
      * @throws Exception
      */
     public function execute(): void
@@ -42,6 +49,10 @@ class ControllerOrder implements Controller
         $this->showOrder();
     }
 
+    /**
+     * Ajoute un article à la commande.
+     * @param int $id
+     */
     private function addToOrder(int $id): void
     {
         if (!isset($_SESSION['order']) || !is_array($_SESSION['order'])) {
@@ -53,6 +64,7 @@ class ControllerOrder implements Controller
     }
 
     /**
+     * Valide la commande en cours.
      * @throws Exception
      */
     private function validateOrder(): void
@@ -70,6 +82,10 @@ class ControllerOrder implements Controller
         $this->modelApiOrders->validateOrder($orderId, $cartIds, $userId, $date, $relayAddress, $valid);
     }
 
+    /**
+     * Supprime un article de la commande.
+     * @param int $id
+     */
     private function removeFromOrder(int $id): void
     {
         if (isset($_SESSION['order'])) {
@@ -77,12 +93,16 @@ class ControllerOrder implements Controller
         }
     }
 
+    /**
+     * Vide la commande en cours.
+     */
     private function clearOrder(): void
     {
         $_SESSION['order'] = [];
     }
 
     /**
+     * Affiche la commande en cours.
      * @throws Exception
      */
     private function showOrder(): void

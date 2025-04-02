@@ -6,6 +6,12 @@ use Exception;
 use models\service\ModelApiCart;
 use views\ViewCart;
 
+/**
+ * Class ControllerCart
+ * @package controllers
+ * @version 1.0
+ * @author Baptiste GASTON
+ */
 class ControllerCart implements Controller
 {
     private ModelApiCart $modelApiCart;
@@ -16,6 +22,7 @@ class ControllerCart implements Controller
     }
 
     /**
+     * Exécute les actions pour le panier.
      * @throws Exception
      */
     public function execute() : void

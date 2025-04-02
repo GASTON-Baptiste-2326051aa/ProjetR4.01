@@ -1,12 +1,30 @@
 <?php
 namespace views;
 
+/**
+ * Classe ViewHomepage
+ *
+ * Affiche la page d'accueil avec les paniers disponibles.
+ *
+ * @package Views
+ * @version 1.0
+ * @author Baptiste GASTON
+ */
 class ViewHomepage
 {
+    /**
+     * Constructeur de la classe ViewHomepage.
+     */
     public function __construct()
     {
     }
 
+    /**
+     * Affiche la page d'accueil.
+     *
+     * @param array $paniers Liste des paniers disponibles.
+     * @return void
+     */
     public function show($paniers) : void
     {
         ob_start();
@@ -42,4 +60,3 @@ class ViewHomepage
         $layout->show();
     }
 }
-

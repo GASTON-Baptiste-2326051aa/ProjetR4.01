@@ -4,6 +4,12 @@ namespace models\service;
 
 use Exception;
 
+/**
+ * Class ModelApiProductUser
+ * @package models\service
+ * @version 1.0
+ * @author Baptiste GASTON
+ */
 class ModelApiProductUser extends ModelApi
 {
     public function __construct($link)
@@ -12,6 +18,10 @@ class ModelApiProductUser extends ModelApi
     }
 
     /**
+     * Authentifie un utilisateur.
+     * @param string $id
+     * @param string $password
+     * @return array
      * @throws Exception
      */
     public function login(string $id, string $password): array
@@ -27,6 +37,9 @@ class ModelApiProductUser extends ModelApi
     }
 
     /**
+     * Récupère un utilisateur par son ID.
+     * @param string $id
+     * @return array
      * @throws Exception
      */
     public function getUser(string $id): array
@@ -36,6 +49,8 @@ class ModelApiProductUser extends ModelApi
     }
 
     /**
+     * Récupère tous les utilisateurs.
+     * @return array
      * @throws Exception
      */
     public function getAllUsers(): array
@@ -45,6 +60,9 @@ class ModelApiProductUser extends ModelApi
     }
 
     /**
+     * Récupère un produit par son ID.
+     * @param string $id
+     * @return array
      * @throws Exception
      */
     public function getProduct(string $id): array
@@ -54,6 +72,8 @@ class ModelApiProductUser extends ModelApi
     }
 
     /**
+     * Récupère tous les produits.
+     * @return array
      * @throws Exception
      */
     public function getAllProducts(): array

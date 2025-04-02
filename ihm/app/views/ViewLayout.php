@@ -3,7 +3,13 @@
 namespace views;
 
 /**
- * Layout affiché pour chaque page
+ * Classe ViewLayout
+ *
+ * Layout affiché pour chaque page.
+ *
+ * @package Views
+ * @version 1.0
+ * @autor Baptiste GASTON
  */
 class ViewLayout
 {
@@ -12,6 +18,7 @@ class ViewLayout
 
     /**
      * Constructeur de la classe
+     *
      * @param string $title
      * @param string $content
      */
@@ -22,7 +29,8 @@ class ViewLayout
     }
 
     /**
-     * Affiche le layout
+     * Affiche le layout.
+     *
      * @return void
      */
     public function show(): void
@@ -59,3 +67,4 @@ class ViewLayout
         <?php
     }
 }
+

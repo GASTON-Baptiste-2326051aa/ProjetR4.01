@@ -4,6 +4,12 @@ namespace models\service;
 
 use Exception;
 
+/**
+ * Class ModelApiOrder
+ * @package models\service
+ * @version 1.0
+ * @autor Baptiste GASTON
+ */
 class ModelApiOrder extends ModelApi
 {
     public function __construct($link)
@@ -12,6 +18,9 @@ class ModelApiOrder extends ModelApi
     }
 
     /**
+     * Récupère une commande par son ID.
+     * @param string $id
+     * @return array
      * @throws Exception
      */
     public function getCommand(string $id) : array
@@ -21,6 +30,14 @@ class ModelApiOrder extends ModelApi
     }
 
     /**
+     * Valide une commande.
+     * @param $id
+     * @param $cartId
+     * @param $userId
+     * @param $date
+     * @param $relayAddress
+     * @param $valid
+     * @return string
      * @throws Exception
      */
     public function validateOrder($id, $cartId, $userId, $date, $relayAddress, $valid): string
@@ -42,6 +59,8 @@ class ModelApiOrder extends ModelApi
     }
 
     /**
+     * Récupère toutes les commandes.
+     * @return array
      * @throws Exception
      */
     public function getAllCommands() : array

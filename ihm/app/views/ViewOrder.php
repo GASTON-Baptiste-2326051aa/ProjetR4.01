@@ -2,12 +2,30 @@
 
 namespace views;
 
+/**
+ * Classe ViewOrder
+ *
+ * Affiche la page de commande.
+ *
+ * @package Views
+ * @version 1.0
+ * @author Baptiste GASTON
+ */
 class ViewOrder
 {
+    /**
+     * Constructeur de la classe ViewOrder.
+     */
     public function __construct()
     {
     }
 
+    /**
+     * Affiche la page de commande.
+     *
+     * @param array $paniers Liste des paniers dans la commande.
+     * @return void
+     */
     public function show($paniers) : void
     {
         ob_start();

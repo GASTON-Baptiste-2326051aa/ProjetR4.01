@@ -6,6 +6,12 @@ use Exception;
 use models\service\ModelApiProductUser;
 use views\ViewLogin;
 
+/**
+ * Class ControllerLogin
+ * @package controllers
+ * @version 1.0
+ * @author Baptiste GASTON
+ */
 class ControllerLogin implements Controller
 {
     private ModelApiProductUser $modelApiProductUser;
@@ -17,6 +23,7 @@ class ControllerLogin implements Controller
     }
 
     /**
+     * Exécute les actions de connexion.
      * @throws Exception
      */
     public function execute(): void
@@ -41,7 +48,6 @@ class ControllerLogin implements Controller
                 var_dump($isLogin);
                 $view = new ViewLogin();
                 $view->show('Login failed');
-                return;
             }
         } else {
             $view = new ViewLogin();

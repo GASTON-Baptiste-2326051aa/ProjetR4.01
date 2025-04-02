@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Enregistre une fonction d'autoload pour charger automatiquement les classes.
+ *
+ * @package Autoload
+ * @version 1.0
+ * @author Baptiste GASTON
+ */
+
 spl_autoload_register(function ($class) {
     $classPath = str_replace('\\', DIRECTORY_SEPARATOR, $class);
 

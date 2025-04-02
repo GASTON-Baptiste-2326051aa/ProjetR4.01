@@ -4,6 +4,12 @@ namespace models\service;
 
 use Exception;
 
+/**
+ * Class ModelApi
+ * @package models\service
+ * @version 1.0
+ * @author Baptiste GASTON
+ */
 class ModelApi
 {
     protected string $link;
@@ -14,6 +20,11 @@ class ModelApi
     }
 
     /**
+     * Effectue une requête HTTP.
+     * @param string $url
+     * @param array $data
+     * @param string $method
+     * @return mixed
      * @throws Exception
      */
     public function request(string $url, array $data = [], string $method = 'GET')

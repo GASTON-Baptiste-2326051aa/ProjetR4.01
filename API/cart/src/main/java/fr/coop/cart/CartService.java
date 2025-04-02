@@ -4,91 +4,115 @@ import fr.coop.cart.other_api.Product;
 import fr.coop.cart.other_api.ProductRepositoryInterface;
 import fr.coop.cart.other_api.User;
 import fr.coop.cart.other_api.UserRepositoryInterface;
-import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
+import java.util.ArrayList;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.Response;
-import java.util.ArrayList;
 
 /**
- * Classe utilisée pour récupérer les informations des paniers et les formater en JSON
+ * Classe utilisée pour récupérer les informations nécessaires à la ressource
+ * (permet de dissocier ressource et mode d'accès aux données)
  */
-@RequestScoped
-@Path("/carts")
-@Produces("application/json")
 public class CartService {
 
     protected final UserRepositoryInterface userRepo;
     protected final ProductRepositoryInterface productRepo;
     protected final CartRepositoryInterface cartRepo;
 
-    @Inject
+    /**
+     * Constructeur permettant d'injecter l'accès aux données
+     * @param cartRepo objet implémentant l'interface d'accès aux données
+     * @param userRepo objet implémentant l'interface d'accès aux données
+     * @param productRepo objet implémentant l'interface d'accès aux données
+     */
     public CartService(CartRepositoryInterface cartRepo, UserRepositoryInterface userRepo, ProductRepositoryInterface productRepo) {
         this.cartRepo = cartRepo;
         this.userRepo = userRepo;
         this.productRepo = productRepo;
     }
 
-    @GET
+    /**
+     * Méthode retournant les informations sur tous les paniers au format JSON
+     * @return une chaîne de caractères contenant les informations sur tous les paniers en format JSON
+     */
     public String getAllCartsJSON() {
         ArrayList<Cart> allCarts = cartRepo.getAllCarts();
+        String result = null;
+
         try (Jsonb jsonb = JsonbBuilder.create()) {
-            return jsonb.toJson(allCarts);
+            result = jsonb.toJson(allCarts);
         } catch (Exception e) {
-            throw new WebApplicationException("Error generating JSON", Response.Status.INTERNAL_SERVER_ERROR);
+            System.err.println(e.getMessage());
         }
+
+        return result;
     }
 
-    @GET
-    @Path("/{id}")
-    public String getCartJSON(@PathParam("id") String id) {
+    /**
+     * Méthode retournant au format JSON les informations sur un panier recherché
+     * @param id identifiant du panier recherché
+     * @return une chaîne de caractères contenant les informations sur le panier en format JSON
+     */
+    public String getCartJSON(String id) {
+        String result = null;
         Cart myCart = cartRepo.getCart(id);
-        if (myCart == null) {
-            throw new NotFoundException("Cart not found");
+
+        if (myCart != null) {
+            try (Jsonb jsonb = JsonbBuilder.create()) {
+                result = jsonb.toJson(myCart);
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
         }
-        try (Jsonb jsonb = JsonbBuilder.create()) {
-            return jsonb.toJson(myCart);
-        } catch (Exception e) {
-            throw new WebApplicationException("Error generating JSON", Response.Status.INTERNAL_SERVER_ERROR);
-        }
+
+        return result;
     }
 
-    @PUT
-    @Path("/{id}")
-    @Consumes("application/json")
-    public boolean updateCart(@PathParam("id") String id, Cart cart) {
+    /**
+     * Méthode permettant de mettre à jour un panier
+     * @param id identifiant du panier à mettre à jour
+     * @param cart nouvel objet contenant les informations mises à jour
+     * @return true si la mise à jour a réussi, false sinon
+     */
+    public boolean updateCart(String id, Cart cart) {
         return cartRepo.updateCart(id, cart.name, cart.description, cart.price, cart.available_quantity);
     }
 
-    @POST
-    @Consumes("application/x-www-form-urlencoded")
-    public Response addProduct(@FormParam("idCart") String idCart, @FormParam("idProduct") String idProduct) {
-        if (cartRepo.addProduct(idCart, idProduct)) {
-            return Response.ok("added").build();
-        } else {
-            return Response.status(Response.Status.CONFLICT).build();
+    /**
+     * Méthode permettant d'ajouter un produit au panier
+     * @param idCart identifiant du panier
+     * @param idProduct identifiant du produit
+     * @return true si l'ajout a réussi, false sinon
+     */
+    public boolean addProduct(String idCart, String idProduct) {
+        Product myProduct = productRepo.getProduct(idProduct);
+        if (myProduct == null) {
+            throw new IllegalArgumentException("Product not found");
         }
+
+        return cartRepo.addProduct(idCart, idProduct);
     }
 
-    @DELETE
-    @Path("/{idCart}/{idProduct}")
-    public Response removeProduct(@PathParam("idCart") String idCart, @PathParam("idProduct") String idProduct) {
-        if (cartRepo.removeProduct(idCart, idProduct)) {
-            return Response.ok("removed").build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
+    /**
+     * Méthode permettant de retirer un produit du panier
+     * @param idCart identifiant du panier
+     * @param idProduct identifiant du produit à retirer
+     * @return true si le produit a été retiré, false sinon
+     */
+    public boolean removeProduct(String idCart, String idProduct) {
+        Product myProduct = productRepo.getProduct(idProduct);
+        if (myProduct == null) {
+            throw new IllegalArgumentException("Product not found");
         }
+
+        return cartRepo.removeProduct(idCart, idProduct);
     }
 
-    @DELETE
-    @Path("/{id}")
-    public Response removeCart(@PathParam("id") String id) {
-        if (cartRepo.deleteCart(id)) {
-            return Response.ok("deleted").build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
+    /**
+     * Méthode permettant de supprimer un panier
+     * @param id identifiant du panier à supprimer
+     * @return true si le panier a été supprimé, false sinon
+     */
+    public boolean removeCart(String id) {
+        return cartRepo.deleteCart(id);
     }
 }

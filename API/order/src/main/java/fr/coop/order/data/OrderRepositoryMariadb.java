@@ -126,6 +126,29 @@ public class OrderRepositoryMariadb implements OrderRepositoryInterface, Closeab
 
 
     @Override
+    public boolean addOrder( String id, String userId, String date, String relayAddress, String valid) {
+        String query = "INSERT INTO `ORDER` (ID, USER_ID, LIMIT_DATE, RELAY_ADDRESS, IS_VALIDATE) VALUES (?,?,?,?,?)";
+        int nbRowModified = 0;
+
+        // construction et exécution d'une requête préparée
+        try ( PreparedStatement ps = dbConnection.prepareStatement(query) ){
+            ps.setInt(1, Integer.parseInt(id));
+            ps.setInt(2, Integer.parseInt(userId));
+            ps.setDate(3, Date.valueOf(date));
+            ps.setString(4, relayAddress );
+            ps.setBoolean(5, Boolean.parseBoolean(valid));
+
+            // exécution de la requête
+            nbRowModified = ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return ( nbRowModified != 0 );
+    }
+
+
+    @Override
     public boolean updateOrder( String id, String userId, String date, String relayAddress, String valid) {
         String query = "UPDATE `ORDER` SET USER_ID=?, LIMIT_DATE=?, RELAY_ADDRESS=?, IS_VALIDATE=? WHERE ID=?";
         int nbRowModified = 0;
@@ -137,6 +160,65 @@ public class OrderRepositoryMariadb implements OrderRepositoryInterface, Closeab
             ps.setString(3, relayAddress );
             ps.setBoolean(4, Boolean.parseBoolean(valid));
             ps.setInt(5, Integer.parseInt(id));
+
+            // exécution de la requête
+            nbRowModified = ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return ( nbRowModified != 0 );
+    }
+
+
+    @Override
+    public boolean deleteOrder(String id) {
+        String query = "DELETE FROM `ORDER` WHERE ID=?";
+        int nbRowModified = 0;
+
+        // construction et exécution d'une requête préparée
+        try ( PreparedStatement ps = dbConnection.prepareStatement(query) ){
+            ps.setInt(1, Integer.parseInt(id));
+
+            // exécution de la requête
+            nbRowModified = ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return ( nbRowModified != 0 );
+    }
+
+
+    @Override
+    public boolean addCart(String id, String cartId) {
+        String query = "INSERT INTO ORDER_CONTENT (ORDER_ID, CART_ID) VALUES (?,?)";
+        int nbRowModified = 0;
+
+        // construction et exécution d'une requête préparée
+        try ( PreparedStatement ps = dbConnection.prepareStatement(query) ){
+            ps.setInt(1, Integer.parseInt(id));
+            ps.setInt(2, Integer.parseInt(cartId));
+
+            // exécution de la requête
+            nbRowModified = ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return ( nbRowModified != 0 );
+    }
+
+
+    @Override
+    public boolean removeCart(String id, String cartId) {
+        String query = "DELETE FROM ORDER_CONTENT WHERE ORDER_ID=? AND CART_ID=?";
+        int nbRowModified = 0;
+
+        // construction et exécution d'une requête préparée
+        try ( PreparedStatement ps = dbConnection.prepareStatement(query) ){
+            ps.setInt(1, Integer.parseInt(id));
+            ps.setInt(2, Integer.parseInt(cartId));
 
             // exécution de la requête
             nbRowModified = ps.executeUpdate();

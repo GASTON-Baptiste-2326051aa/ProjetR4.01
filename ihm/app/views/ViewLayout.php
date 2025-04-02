@@ -37,7 +37,7 @@ class ViewLayout
         <head>
             <meta charset="utf-8"/>
             <title><?= $this->title; ?> - Coopérative </title> <!-- Prend la valeur de $title -->
-            <link href="../../../public/_assets/styles/style.css" rel="stylesheet"/>
+            <link href="/_assets/styles/style.css" rel="stylesheet"/>
         </head>
         <body>
         <header>

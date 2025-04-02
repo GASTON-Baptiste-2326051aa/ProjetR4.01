@@ -15,6 +15,7 @@ try {
     if (!isset($_SESSION['logged'])) {
         $controller = new ControllerLogin();
         $controller->execute();
+        exit;
     }
     if (filter_input(INPUT_GET, 'action')) {
         $action = filter_input(INPUT_GET, 'action', FILTER_SANITIZE_SPECIAL_CHARS);

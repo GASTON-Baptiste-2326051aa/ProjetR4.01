@@ -1,46 +1,51 @@
 <?php
+
 namespace controllers;
+
 use Exception;
 use models\service\ModelApiProductUser;
 use views\ViewLogin;
 
 class ControllerLogin implements Controller
 {
-    private modelApiProductUser $modelApiProductUser;
+    private ModelApiProductUser $modelApiProductUser;
+
     public function __construct()
     {
-        $this->modelApiProductUser = new modelApiProductUser('http://localhost:8080/api-1.0-SNAPSHOT/api/user_and_product');
-
+        $this->modelApiProductUser =
+            new ModelApiProductUser('http://localhost:8080/user_and_product-1.0-SNAPSHOT/api/user_and_product');
     }
 
     /**
      * @throws Exception
      */
-    public function execute() : void
+    public function execute(): void
     {
-        if ((isset($_GET[$_POST['id']])) || isset($_POST['password'])) {
-            $id = htmlspecialchars($_POST['id']);
+        if (isset($_SESSION['logged']) && $_SESSION['logged'] === true) {
+            header('Location: index.php?controller=homepage');
+            exit();
+        }
+
+        if (isset($_POST['id_client']) && isset($_POST['password'])) {
+            $id = htmlspecialchars($_POST['id_client']);
             $password = htmlspecialchars($_POST['password']);
+
             $isLogin = $this->modelApiProductUser->login($id, $password);
-            if($isLogin['status'] == 200)
-            {
-                $user = $this->modelApiProductUser->getUser($id);
-                session_start();
-                $_SESSION['user'] = $user;
+
+            if (isset($isLogin['exists']) && $isLogin['exists'] === true) { // Correction ici
+                $_SESSION['user'] = $id;
                 $_SESSION['logged'] = true;
                 header('Location: index.php?controller=homepage');
-            }
-            else
-            {
+                exit();
+            } else {
+                var_dump($isLogin);
                 $view = new ViewLogin();
                 $view->show('Login failed');
+                return;
             }
-        }
-        else
-        {
+        } else {
             $view = new ViewLogin();
             $view->show();
         }
     }
-
 }

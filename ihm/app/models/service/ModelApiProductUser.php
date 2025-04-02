@@ -1,6 +1,7 @@
 <?php
 
 namespace models\service;
+
 use Exception;
 
 class ModelApiProductUser extends ModelApi
@@ -10,18 +11,19 @@ class ModelApiProductUser extends ModelApi
         parent::__construct($link);
     }
 
-
     /**
      * @throws Exception
      */
     public function login(string $id, string $password): array
     {
-        $url = '/user/exist';
+        $url = '/user/exists';
         $data = [
             'id' => $id,
             'password' => $password
         ];
-        return $this->request($url,$data,'POST' );
+
+        var_dump(json_encode($data)); // Ajoute cette ligne pour voir le JSON envoyé
+        return $this->request($url, $data, 'POST');
     }
 
     /**
@@ -59,7 +61,4 @@ class ModelApiProductUser extends ModelApi
         $url = '/product';
         return $this->request($url);
     }
-
-
-
 }

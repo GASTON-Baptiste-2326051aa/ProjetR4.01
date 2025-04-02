@@ -112,8 +112,9 @@ public class OrderResource {
      * @return une réponse "deleted" si la suppression a été effectuée, une erreur NotFound sinon
      */
     @DELETE
-    @Consumes("application/json")
-    public Response deleteOrder(String id) {
+    @Path("{id}")
+    public Response deleteOrder(@PathParam("id") String id) {
+        System.out.println(id);
 
         // si la commande n'a pas été trouvée
         if (!service.deleteOrder(id))
@@ -125,16 +126,16 @@ public class OrderResource {
     /**
      * Endpoint permettant d'ajouter un panier à une commande
      * @param id l'identifiant de la commande à mettre à jour
-     * @param cartid l'identifiant du panier à ajouter
+     * @param cartId l'identifiant du panier à ajouter
      * @return une réponse "added" si l'ajout a été effectué, une erreur NotFound sinon
      */
     @POST
     @Path("{id}")
-    @Consumes("application/json")
-    public Response addCart(@PathParam("id") String id, String cartid ) {
+    @Consumes("text/plain")
+    public Response addCart(@PathParam("id") String id, String cartId ) {
 
         // si la commande ou le panier n'a pas a été trouvé
-        if (!service.addCart(id, cartid))
+        if (!service.addCart(id, cartId))
             throw new NotFoundException();
         else
             return Response.ok("added").build();
@@ -143,16 +144,15 @@ public class OrderResource {
     /**
      * Méthode permettant de retirer un panier d'une commande
      * @param id l'identifiant de la commande à mettre à jour
-     * @param cartid l'identifiant du panier à retirer
+     * @param cartId l'identifiant du panier à retirer
      * @return une réponse "removed" si la mise à jour a été effectuée, une erreur NotFound sinon
      */
     @DELETE
-    @Path("{id}")
-    @Consumes("application/json")
-    public Response removeCart(@PathParam("id") String id, String cartid) {
+    @Path("{id}/{cartId}")
+    public Response removeCart(@PathParam("id") String id, @PathParam("cartId") String cartId) {
 
         // si la commande ou le panier n'a pas été trouvé
-        if (!service.removeCart(id, cartid))
+        if (!service.removeCart(id, cartId))
             throw new NotFoundException();
         else
             return Response.ok("removed").build();

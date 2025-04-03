@@ -3,6 +3,8 @@ package fr.coop.cart;
 import fr.coop.cart.data.CartRepositoryInterface;
 
 import fr.coop.cart.data.CartRepositoryMariadb;
+//import fr.coop.cart.other_api.ProductRepositoryAPI;
+//import fr.coop.cart.other_api.ProductRepositoryInterface;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Disposes;
 import jakarta.enterprise.inject.Produces;
@@ -31,6 +33,19 @@ public class CartApplication extends Application {
         return db;
     }
 
+
+     /*
+    /**
+     * Méthode appelée par l'API CDI pour injecter l'API Produits au moment de la création de la ressource
+     * @return une instance de l'API avec l'url à utiliser
+     ** /
+    @Produces
+    private ProductRepositoryInterface connectProductApi(){
+        return new ProductRepositoryAPI("http://localhost:8080/api-1.0-SNAPSHOT/api/user_and_product/product");
+    }
+
+
+*/
 
     /**
      * Méthode permettant de fermer la connexion à la base de données lorsque l'application est arrêtée

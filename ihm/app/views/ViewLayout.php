@@ -46,12 +46,14 @@ class ViewLayout
         <body>
 
         <header>
-            <nav>
-                <ul>
-                    <li><a href="/index.php">Accueil</a></li>
-                    <li><a href="/index.php?action=order">Ma Commande</a></li>
-                </ul>
-            </nav>
+            <?php if (isset($_SESSION['logged'])) : ?>
+                <nav>
+                    <ul>
+                        <li><a href="/index.php">Accueil</a></li>
+                        <li><a href="/index.php?action=order">Ma Commande</a></li>
+                    </ul>
+                </nav>
+            <?php endif; ?>
         </header>
 
         <main>

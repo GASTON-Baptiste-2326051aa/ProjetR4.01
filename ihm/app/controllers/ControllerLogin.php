@@ -36,8 +36,10 @@ class ControllerLogin implements Controller
         if (isset($_POST['id_client']) && isset($_POST['password'])) {
             $id = htmlspecialchars($_POST['id_client']);
             $password = htmlspecialchars($_POST['password']);
-
+            var_dump($password);
+            var_dump($id);
             $isLogin = $this->modelApiProductUser->login($id, $password);
+
 
             if (isset($isLogin['exists']) && $isLogin['exists'] === true) { // Correction ici
                 $_SESSION['user'] = $id;
@@ -48,6 +50,7 @@ class ControllerLogin implements Controller
                 var_dump($isLogin);
                 $view = new ViewLogin();
                 $view->show('Login failed');
+                return;
             }
         } else {
             $view = new ViewLogin();

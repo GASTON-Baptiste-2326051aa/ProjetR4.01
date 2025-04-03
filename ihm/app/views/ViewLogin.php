@@ -14,7 +14,7 @@ class ViewLogin
     {
         ob_start();
         ?>
-        <section>
+        <section class="login">
             <?php if ($error) : ?>
                 <div class="error">
                     <p> <?php echo $error?></p>

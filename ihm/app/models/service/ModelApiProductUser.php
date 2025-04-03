@@ -32,7 +32,8 @@ class ModelApiProductUser extends ModelApi
             'password' => $password
         ];
 
-        var_dump(json_encode($data)); // Ajoute cette ligne pour voir le JSON envoyé
+        var_dump($data);
+
         return $this->request($url, $data, 'POST');
     }
 

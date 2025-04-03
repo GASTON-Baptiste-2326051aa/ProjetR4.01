@@ -29,7 +29,6 @@ class ModelApi
      */
     public function request(string $url, array $data = [], string $method = 'GET')
     {
-
         $url = $this->link . $url;
 
         $ch = curl_init();

@@ -57,13 +57,15 @@ class ViewOrder
                     </form>
 
                     <form method="post" action="/index.php?action=order&validate">
-                        <button type="submit" class="btn btn-validate">Valider la commande</button>
+                        <button type="submit" class="btn btn-validate">Enregistrer la commande</button>
                     </form>
                 </div>
             <?php } ?>
 
             <a href="/index.php" class="btn btn-home">Retour à l'accueil</a>
         </section>
+        <script src="/_assets/js/order.js"></script>
+
 
         <?php
         $layout = new ViewLayout('Commande', ob_get_clean());
